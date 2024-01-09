@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../__generated__/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String       @id @default(uuid())
+  username      String
+  discriminator String
+  email         String       @unique
+  lastSeen      DateTime     @map(name: "last_seen") @db.Timestamptz(0)
+  createdAt     DateTime     @default(now()) @map(name: "created_at") @db.Timestamptz(0)
+  Server        Server[]
+  UserServer    UserServer[]
+
+  @@unique([username, discriminator])
+  @@map(name: "users")
+}
+
+model Server {
+  id         String       @id @default(uuid())
+  name       String
+  createdAt  DateTime     @default(now()) @map(name: "created_at") @db.Timestamptz(0)
+  ownerId    String
+  owner      User         @relation(fields: [ownerId], references: [id])
+  UserServer UserServer[]
+
+  @@map(name: "servers")
+}
+
+model UserServer {
+  userId   String @map(name: "user_id")
+  serverId String @map(name: "server_id")
+  user     User   @relation(fields: [userId], references: [id])
+  server   Server @relation(fields: [serverId], references: [id])
+
+  @@id([userId, serverId])
+  @@map(name: "user_server")
+}
