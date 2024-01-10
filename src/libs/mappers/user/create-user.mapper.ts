@@ -7,10 +7,10 @@ export class CreateUserMapper implements Mapper<CreateUserDto, UserEntity> {
   public map(data: CreateUserDto): UserEntity {
     const user = new UserEntity();
 
-    user.username = data.username;
+    user.username = data.name;
     user.email = data.email;
+    user.avatarUrl = data.avatarUrl;
     user.discriminator = generateRandom4DigitNumber().toString();
-    user.lastSeen = new Date();
 
     return user;
   }
@@ -19,8 +19,9 @@ export class CreateUserMapper implements Mapper<CreateUserDto, UserEntity> {
     const user = new CreateUserDto();
 
     user.id = data.id;
-    user.username = data.username;
+    user.name = data.username;
     user.email = data.email;
+    user.avatarUrl = data.avatarUrl;
 
     return user;
   }

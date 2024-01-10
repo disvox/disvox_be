@@ -16,7 +16,8 @@ model User {
   username      String
   discriminator String
   email         String       @unique
-  lastSeen      DateTime     @map(name: "last_seen") @db.Timestamptz(0)
+  avatarUrl     String       @default("") @map(name: "avatar_url")
+  lastSeen      DateTime     @default(now()) @map(name: "last_seen") @db.Timestamptz(0)
   createdAt     DateTime     @default(now()) @map(name: "created_at") @db.Timestamptz(0)
   Server        Server[]
   UserServer    UserServer[]

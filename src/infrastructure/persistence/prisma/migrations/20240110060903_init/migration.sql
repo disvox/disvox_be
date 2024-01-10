@@ -4,7 +4,8 @@ CREATE TABLE "users" (
     "username" TEXT NOT NULL,
     "discriminator" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "last_seen" TIMESTAMPTZ(0) NOT NULL,
+    "avatar_url" TEXT NOT NULL DEFAULT '',
+    "last_seen" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_at" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")

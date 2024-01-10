@@ -20,7 +20,7 @@
     "paths": {
       "@/domain/*": ["./src/domain/*"],
       "@/infrastructure/*": ["./src/infrastructure/*"],
-      "@/use-cases/*": ["./src/use-cases/*"],
+      "@/use-cases": ["./src/use-cases"],
       "@/libs/*": ["./src/libs/*"],
       "@/base": ["./src/base"],
       "@/prisma": ["./__generated__/prisma"]

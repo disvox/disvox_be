@@ -34,9 +34,11 @@ export class UserRepository extends Repository<UserEntity> {
   }
 
   async getOne(filter: Partial<UserEntity>): Promise<UserEntity> {
-    return await this.getMany(filter).then((items) =>
-      items.length > 0 ? items[0] : null,
-    );
+    return this.prisma.user.findUnique({
+      where: {
+        email: filter.email,
+      },
+    });
   }
 
   async getMany(filter: Partial<UserEntity>): Promise<UserEntity[]> {

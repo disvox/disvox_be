@@ -1,8 +1,19 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
-import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
+import { commonConfig, googleConfig, jwtConfig } from './configs';
 
 @Module({
-  imports: [UserModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      load: [commonConfig, jwtConfig, googleConfig],
+      cache: true,
+      expandVariables: true,
+    }),
+    AuthModule,
+  ],
 })
 export class AppModule {}

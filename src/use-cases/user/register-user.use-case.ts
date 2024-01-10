@@ -3,7 +3,7 @@ import { UserRepository } from '@/domain/repositories';
 import { CreateUserDto, CreatedUserDto } from '@/libs/dtos/user';
 import { CreateUserMapper, CreatedUserMapper } from '@/libs/mappers';
 
-export class CreateUserUseCase implements UseCase<CreateUserDto> {
+export class RegisterUserUseCase implements UseCase<CreatedUserDto> {
   private createUserMapper: CreateUserMapper;
   private createdUserMapper: CreatedUserMapper;
 
