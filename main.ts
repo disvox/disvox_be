@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 
-import { AppModule } from './app.module';
-import { commonConfig } from './configs';
+import { AppModule } from './src/presentation/app.module';
+import { commonConfig } from './src/presentation/http/shared/configs';
 
 let port: number;
 

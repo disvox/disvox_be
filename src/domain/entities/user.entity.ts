@@ -1,4 +1,4 @@
-import { Entity } from '@/base';
+import { Entity } from '@/shared';
 
 export class UserEntity extends Entity {
   username: string;

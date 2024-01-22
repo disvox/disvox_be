@@ -18,12 +18,13 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@/domain/*": ["./src/domain/*"],
-      "@/infrastructure/*": ["./src/infrastructure/*"],
-      "@/use-cases": ["./src/use-cases"],
-      "@/libs/*": ["./src/libs/*"],
-      "@/base": ["./src/base"],
-      "@/prisma": ["./__generated__/prisma"]
+      "@/domain": ["./src/domain"],
+      "@/infrastructure": ["./src/infrastructure"],
+      "@/application": ["./src/application"],
+      "@/presentation": ["./src/presentation"],
+      "@/shared": ["./src/shared"],
+      "@/prisma": ["./__generated__/prisma"],
+      "@/utils": ["./src/utils"]
     }
   }
 }

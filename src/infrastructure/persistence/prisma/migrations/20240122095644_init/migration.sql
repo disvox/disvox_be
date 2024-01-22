@@ -5,8 +5,9 @@ CREATE TABLE "users" (
     "discriminator" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "avatar_url" TEXT NOT NULL DEFAULT '',
-    "last_seen" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastSeen" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(0) NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );

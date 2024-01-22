@@ -1,4 +1,4 @@
-import { Repository } from '@/base';
+import { IRepository } from '@/shared';
 import { UserEntity } from '../entities';
 
-export abstract class UserRepository extends Repository<UserEntity> {}
+export interface IUserRepository extends IRepository<UserEntity> {}
