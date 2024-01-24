@@ -1,32 +1,32 @@
-import { Injectable } from '@nestjs/common';
+// import { Injectable } from '@nestjs/common';
 
-import { UserEntity } from '@/domain/entities';
-import {
-  AbilityBuilder,
-  AbilityClass,
-  InferSubjects,
-  PureAbility,
-} from '@casl/ability';
+// import { UserEntity } from '@/domain/entities';
+// import {
+//   AbilityBuilder,
+//   AbilityClass,
+//   InferSubjects,
+//   PureAbility,
+// } from '@casl/ability';
 
-export enum Action {
-  Manage = 'manage',
-  Create = 'create',
-  Read = 'read',
-  Update = 'update',
-  Delete = 'delete',
-}
+// export enum Action {
+//   Manage = 'manage',
+//   Create = 'create',
+//   Read = 'read',
+//   Update = 'update',
+//   Delete = 'delete',
+// }
 
-export type Subjects = InferSubjects<typeof UserEntity> | 'all';
+// export type Subjects = InferSubjects<typeof UserEntity> | 'all';
 
-export type AppAbility = PureAbility<[Action, Subjects]>;
+// export type AppAbility = PureAbility<[Action, Subjects]>;
 
-@Injectable()
-export class AbilityFactory {
-  defineAbility(user: UserEntity) {
-    const { can, cannot, build } = new AbilityBuilder(
-      PureAbility as AbilityClass<AppAbility>,
-    );
+// @Injectable()
+// export class AbilityFactory {
+//   defineAbility(user: UserEntity) {
+//     const { can, cannot, build } = new AbilityBuilder(
+//       PureAbility as AbilityClass<AppAbility>,
+//     );
 
-    builder.can(Action.Read, UserEntity);
-  }
-}
+//     builder.can(Action.Read, UserEntity);
+//   }
+// }

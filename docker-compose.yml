@@ -11,5 +11,14 @@ services:
     volumes:
       - disvox_data:/var/lib/postgresql/data
 
+  # bytebase:
+  #   image: bytebase/bytebase:2.13.1
+  #   container_name: bytebase
+  #   ports:
+  #     - '8080:8080'
+  #   volumes:
+  #     - ~/.bytebase/data:/var/opt/bytebase
+  #   init: true
+
 volumes:
   disvox_data:

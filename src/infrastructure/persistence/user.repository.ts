@@ -1,26 +1,28 @@
-import { IUserRepository, UserEntity } from '@/domain';
-import { PrismaService } from './prisma/prisma.service';
+import { IUserRepository, User } from '@/domain';
+import { PrismaService } from './prisma.service';
 
 export class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(user: UserEntity): Promise<UserEntity> {
-    return this.prisma.user.create({ data: user });
+  async create(data: User): Promise<User> {
+    return this.prisma.user.create({ data });
   }
 
-  getById(id: string): Promise<UserEntity> {
+  getById(id: string): Promise<User> {
     throw new Error('Method not implemented.');
   }
-  getAll(): Promise<UserEntity[]> {
+
+  getAll(): Promise<User[]> {
     throw new Error('Method not implemented.');
   }
-  getOne(filter: Partial<UserEntity>): Promise<UserEntity> {
+
+  async getOne(filter: Partial<User>): Promise<User | null> {
+    return this.prisma.user.findFirst({ where: filter });
+  }
+  getMany(filter: Partial<User>): Promise<User[]> {
     throw new Error('Method not implemented.');
   }
-  getMany(filter: Partial<UserEntity>): Promise<UserEntity[]> {
-    throw new Error('Method not implemented.');
-  }
-  update(id: string, data: Partial<UserEntity>): Promise<UserEntity> {
+  update(id: string, data: Partial<User>): Promise<User> {
     throw new Error('Method not implemented.');
   }
   delete(id: string): Promise<void> {

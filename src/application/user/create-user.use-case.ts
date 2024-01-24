@@ -1,5 +1,5 @@
 import { IUseCase } from '@/shared';
-import { IUserRepository, UserEntity } from '@/domain';
+import { IUserRepository, User } from '@/domain';
 import { generateRandomNDigitNumber } from '@/utils';
 
 interface ICreateUserDto {
@@ -13,6 +13,7 @@ interface ICreatedUserDto {
   username: string;
   discriminator: string;
   email: string;
+  avatarUrl: string;
   lastSeen: Date;
 }
 
@@ -22,7 +23,7 @@ export class CreateUserUseCase
   constructor(private readonly repository: IUserRepository) {}
 
   public async execute(input: ICreateUserDto): Promise<ICreatedUserDto> {
-    const user = new UserEntity();
+    const user = new User();
 
     user.username = input.username;
     user.discriminator = generateRandomNDigitNumber(4).toString();

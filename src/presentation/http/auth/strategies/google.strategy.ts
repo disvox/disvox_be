@@ -3,8 +3,8 @@ import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 
-import { googleConfig } from '@/infrastructure/framework/configs';
-import { OauthUser } from '../dtos/auth.dto';
+import { googleConfig } from '../../../shared';
+import { OauthUser } from '../../auth/dtos';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -30,9 +30,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
     const user: OauthUser = {
       provider,
-      email: emails[0].value,
-      name: `${name.givenName} ${name.familyName}`,
-      avatarUrl: photos[0].value,
+      email: emails ? emails[0].value : undefined,
+      username: `${name?.givenName} ${name?.familyName}`,
+      avatarUrl: photos ? photos[0].value : undefined,
     };
 
     done(null, user);

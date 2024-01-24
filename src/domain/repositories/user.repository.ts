@@ -1,4 +1,6 @@
 import { IRepository } from '@/shared';
-import { UserEntity } from '../entities';
+import { TUserRelation, User } from '../entities';
 
-export interface IUserRepository extends IRepository<UserEntity> {}
+export interface IUserRepository extends IRepository<User & TUserRelation> {}
+
+export const UserRepositoryToken = Symbol('IUserRepository');

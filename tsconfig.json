@@ -12,7 +12,7 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
@@ -23,8 +23,8 @@
       "@/application": ["./src/application"],
       "@/presentation": ["./src/presentation"],
       "@/shared": ["./src/shared"],
-      "@/prisma": ["./__generated__/prisma"],
-      "@/utils": ["./src/utils"]
+      "@/utils": ["./src/utils"],
+      "@/prisma": ["./__generated__/prisma"]
     }
   }
 }

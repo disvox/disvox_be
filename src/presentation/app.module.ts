@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { AuthModule } from './http/auth/auth.module';
-import { commonConfig, googleConfig, jwtConfig } from './http/shared/configs';
+// import { AuthModule } from './http/auth/auth.module';
+import { commonConfig, googleConfig, jwtConfig } from './shared';
+import { PermissionModule, AuthModule } from './http';
+import { PrismaService } from '@/infrastructure';
 
 @Module({
   imports: [
@@ -13,7 +15,14 @@ import { commonConfig, googleConfig, jwtConfig } from './http/shared/configs';
       cache: true,
       expandVariables: true,
     }),
+    PermissionModule,
     AuthModule,
+    {
+      module: PrismaService,
+      providers: [PrismaService],
+      exports: [PrismaService],
+      global: true,
+    },
   ],
 })
 export class AppModule {}

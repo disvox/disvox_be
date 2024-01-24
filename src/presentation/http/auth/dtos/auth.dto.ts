@@ -1,7 +1,7 @@
 export interface OauthUser {
   provider: string;
-  email: string;
-  name?: string;
+  email?: string;
+  username?: string;
   avatarUrl?: string;
 }
 
