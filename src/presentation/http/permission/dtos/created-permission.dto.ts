@@ -3,7 +3,7 @@ export class CreatedPermissionDto {
   action: string;
   subject: string;
   fields: string[];
-  conditions: string;
+  conditions: any;
   inverted: boolean;
   system: boolean;
 }

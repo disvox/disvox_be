@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsString, Validate } from 'class-validator';
 
 export class CreatePermissionDto {
   @ApiProperty()
@@ -14,7 +14,7 @@ export class CreatePermissionDto {
   fields: string[];
 
   @ApiProperty()
-  conditions: string;
+  conditions: any;
 
   @ApiProperty()
   inverted: boolean;

@@ -1,11 +1,14 @@
 import { IPermissionRepository, Permission } from '@/domain';
 import { IUseCase } from '@/shared';
+import { TConditionOperators } from './enums';
 
 interface ICreatePermissionDto {
   action: string;
   subject: string;
   fields: string[];
-  conditions: string;
+  conditions: {
+    [key in `${TConditionOperators}`]?: Record<string, string>;
+  };
   inverted: boolean;
   system: boolean;
 }
@@ -33,7 +36,7 @@ export class CreatePermissionUseCase
     permission.action = input.action;
     permission.subject = input.subject;
     permission.fields = input.fields;
-    permission.conditions = input.conditions;
+    permission.conditions = JSON.stringify(input.conditions);
     permission.inverted = input.inverted;
     permission.system = input.system;
 
