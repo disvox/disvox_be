@@ -17,10 +17,6 @@ export class PermissionController {
   async create(
     @Body() input: CreatePermissionDto,
   ): Promise<CreatedPermissionDto | null> {
-    return null;
-    // return this.createPermissionUseCase.execute({
-    //   ...input,
-    //   conditions: { StringLike: { nguyen: 'nguyen' } },
-    // });
+    return this.createPermissionUseCase.execute(input);
   }
 }

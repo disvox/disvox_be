@@ -1,8 +1,8 @@
 export interface SerializedException {
-  message: string;
+  message: string | string[];
   code: string;
   stack?: string;
-  cause?: string;
+  cause?: unknown;
   metadata?: unknown;
 }
 
@@ -14,7 +14,7 @@ export abstract class BaseException extends Error {
     readonly cause?: Error,
     readonly metadata?: unknown,
   ) {
-    super(message);
+    super(message, { cause });
   }
 
   toJSON(): SerializedException {
@@ -22,7 +22,7 @@ export abstract class BaseException extends Error {
       message: this.message,
       code: this.code,
       stack: this.stack,
-      cause: JSON.stringify(this.cause),
+      cause: this.cause,
       metadata: this.metadata,
     };
   }

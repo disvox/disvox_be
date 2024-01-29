@@ -55,7 +55,6 @@ model Permission {
   id         String           @id @default(uuid())
   action     String
   subject    String
-  fields     String[]
   conditions String
   inverted   Boolean
   system     Boolean

@@ -1,7 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
-import { AppModule, commonConfig, configSwagger } from '@/presentation';
+import {
+  AppModule,
+  ArgumentInvalidExceptionFilter,
+  commonConfig,
+  configSwagger,
+} from '@/presentation';
 
 let port: number;
 
@@ -13,6 +18,7 @@ async function bootstrap() {
   configSwagger(app);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new ArgumentInvalidExceptionFilter());
 
   port = app.get(commonConfig.KEY).port;
   await app.listen(port);
