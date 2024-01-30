@@ -2,11 +2,7 @@ import { IPermissionRepository, Permission } from '@/domain';
 import { PrismaService } from './prisma.service';
 
 export class PermissionRepository implements IPermissionRepository {
-  private readonly prisma: PrismaService;
-
-  constructor() {
-    this.prisma = new PrismaService();
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Permission): Promise<Permission> {
     return this.prisma.permission.create({ data });

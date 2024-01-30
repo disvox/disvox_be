@@ -1,14 +1,16 @@
-import { IRoleRepository, Role } from '@/domain';
+import { IRoleRepository, Permission, Role } from '@/domain';
 import { IUseCase } from '@/shared';
 
 interface ICreateRoleDto {
   name: string;
+  permissionIds: string[];
 }
 
 interface ICreatedRoleDto {
   id: string;
   name: string;
   isGlobal: boolean;
+  permissions: Permission[];
 }
 
 export class CreateRoleUseCase
@@ -20,8 +22,8 @@ export class CreateRoleUseCase
     const role = new Role();
 
     role.name = input.name;
-    role.isGlobal = false;
+    role.isGlobal = true;
 
-    return this.repository.create(role);
+    return this.repository.createWithPermissionIds(role, input.permissionIds);
   }
 }

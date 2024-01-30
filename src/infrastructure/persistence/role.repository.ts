@@ -1,11 +1,30 @@
-import { IRoleRepository, Role } from '@/domain';
+import { IRoleRepository, Permission, Role } from '@/domain';
 import { PrismaService } from './prisma.service';
 
 export class RoleRepository implements IRoleRepository {
-  private readonly prisma: PrismaService;
+  constructor(private readonly prisma: PrismaService) {}
 
-  constructor() {
-    this.prisma = new PrismaService();
+  createWithPermissionIds(
+    data: Role,
+    permissionIds: string[],
+  ): Promise<Role & { permissions: Permission[] }> {
+    return this.prisma.role.create({
+      data: {
+        ...data,
+        permissions: {
+          connect: permissionIds.map((id) => ({
+            id,
+          })),
+        },
+      },
+      include: {
+        permissions: true,
+      },
+    });
+  }
+
+  getMany(filter: Partial<Role>): Promise<Role[]> {
+    throw new Error('Method not implemented.');
   }
 
   create(data: Role): Promise<Role> {
@@ -20,9 +39,7 @@ export class RoleRepository implements IRoleRepository {
   getOne(filter: Partial<Role>): Promise<Role> {
     throw new Error('Method not implemented.');
   }
-  getMany(filter: Partial<Role>): Promise<Role[]> {
-    throw new Error('Method not implemented.');
-  }
+
   update(id: string, data: Partial<Role>): Promise<Role> {
     throw new Error('Method not implemented.');
   }

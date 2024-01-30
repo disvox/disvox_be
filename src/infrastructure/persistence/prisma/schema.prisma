@@ -12,18 +12,18 @@ datasource db {
 }
 
 model User {
-  id            String           @id @default(uuid())
+  id            String       @id @default(uuid())
   username      String
   discriminator String
-  email         String           @unique
-  avatarUrl     String           @default("") @map(name: "avatar_url")
+  email         String       @unique
+  avatarUrl     String       @default("") @map(name: "avatar_url")
   lastSeen      DateTime
-  createdAt     DateTime         @default(now()) @map(name: "created_at") @db.Timestamptz(0)
-  updatedAt     DateTime         @updatedAt @map(name: "updated_at") @db.Timestamptz(0)
+  createdAt     DateTime     @default(now()) @map(name: "created_at") @db.Timestamptz(0)
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at") @db.Timestamptz(0)
   ownedServers  Server[]
   servers       UserServer[]
-  roles         UserRole[]
-  permissions   UserPermission[]
+  roles         Role[]
+  permissions   Permission[]
 
   @@unique([username, discriminator])
   @@map(name: "users")
@@ -52,58 +52,28 @@ model UserServer {
 }
 
 model Permission {
-  id         String           @id @default(uuid())
+  id         String   @id @default(uuid())
   action     String
   subject    String
   conditions String
   inverted   Boolean
   system     Boolean
-  createdAt  DateTime         @default(now()) @map(name: "created_at") @db.Timestamptz(0)
-  updatedAt  DateTime         @updatedAt @map(name: "updated_at") @db.Timestamptz(0)
-  roles      RolePermission[]
-  users      UserPermission[]
+  createdAt  DateTime @default(now()) @map(name: "created_at") @db.Timestamptz(0)
+  updatedAt  DateTime @updatedAt @map(name: "updated_at") @db.Timestamptz(0)
+  roles      Role[]
+  users      User[]
 
   @@map(name: "permissions")
 }
 
 model Role {
-  id          String           @id @default(uuid())
+  id          String       @id @default(uuid())
   name        String
-  isGlobal    Boolean          @map(name: "is_global")
-  createdAt   DateTime         @default(now()) @map(name: "created_at") @db.Timestamptz(0)
-  updatedAt   DateTime         @updatedAt @map(name: "updated_at") @db.Timestamptz(0)
-  permissions RolePermission[]
-  users       UserRole[]
+  isGlobal    Boolean      @map(name: "is_global")
+  createdAt   DateTime     @default(now()) @map(name: "created_at") @db.Timestamptz(0)
+  updatedAt   DateTime     @updatedAt @map(name: "updated_at") @db.Timestamptz(0)
+  permissions Permission[]
+  users       User[]
 
   @@map(name: "roles")
-}
-
-model RolePermission {
-  roleId       String     @map(name: "role_id")
-  permissionId String     @map(name: "permission_id")
-  role         Role       @relation(fields: [roleId], references: [id])
-  permission   Permission @relation(fields: [permissionId], references: [id])
-
-  @@id([roleId, permissionId])
-  @@map(name: "role_permission")
-}
-
-model UserRole {
-  userId String @map(name: "user_id")
-  roleId String @map(name: "role_id")
-  user   User   @relation(fields: [userId], references: [id])
-  role   Role   @relation(fields: [roleId], references: [id])
-
-  @@id([userId, roleId])
-  @@map(name: "user_role")
-}
-
-model UserPermission {
-  userId       String     @map(name: "user_id")
-  permissionId String     @map(name: "permission_id")
-  user         User       @relation(fields: [userId], references: [id])
-  permission   Permission @relation(fields: [permissionId], references: [id])
-
-  @@id([userId, permissionId])
-  @@map(name: "user_permission")
 }

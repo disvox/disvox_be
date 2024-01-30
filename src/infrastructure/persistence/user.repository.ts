@@ -1,8 +1,18 @@
-import { IUserRepository, User } from '@/domain';
+import { IUserRepository, TUserRelation, User } from '@/domain';
 import { PrismaService } from './prisma.service';
 
 export class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaService) {}
+
+  getOneWithPopulate(
+    filter: Partial<User & TUserRelation>,
+    populate: { roles: boolean; permissions: boolean },
+  ): Promise<any> {
+    return this.prisma.user.findUniqueOrThrow({
+      where: { id: filter.id },
+      include: {},
+    });
+  }
 
   async create(data: User): Promise<User> {
     return this.prisma.user.create({ data });

@@ -5,7 +5,7 @@ import { CreatePermissionUseCase } from '@/application';
 import { CreatePermissionDto, CreatedPermissionDto } from './dtos';
 import { SWAGGER_SETTINGS } from '../shared';
 
-@Controller('permission')
+@Controller('permissions')
 @ApiTags(SWAGGER_SETTINGS.TAGS.PERMISSION)
 export class PermissionController {
   constructor(
@@ -16,7 +16,7 @@ export class PermissionController {
   @ApiBody({ type: CreatePermissionDto })
   async create(
     @Body() input: CreatePermissionDto,
-  ): Promise<CreatedPermissionDto | null> {
+  ): Promise<CreatedPermissionDto> {
     return this.createPermissionUseCase.execute(input);
   }
 }

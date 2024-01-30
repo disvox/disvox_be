@@ -5,5 +5,7 @@ export const SWAGGER_SETTINGS = {
   VERSION: '0.1',
   TAGS: {
     PERMISSION: 'Permission',
+    USER: 'User',
+    ROLE: 'Role',
   },
 } as const;

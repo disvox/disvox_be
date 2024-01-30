@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { IPermissionRepository, PermissionRepositoryToken } from '@/domain';
-import { PermissionRepository } from '@/infrastructure';
+import { PermissionRepository, PrismaService } from '@/infrastructure';
 import { CreatePermissionUseCase } from '@/application';
 
 import { PermissionController } from './permission.controller';
@@ -11,7 +11,8 @@ import { PermissionController } from './permission.controller';
   providers: [
     {
       provide: PermissionRepositoryToken,
-      useFactory: () => new PermissionRepository(),
+      useFactory: (prisma: PrismaService) => new PermissionRepository(prisma),
+      inject: [PrismaService],
     },
     {
       provide: CreatePermissionUseCase,

@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-// import { AuthModule } from './http/auth/auth.module';
 import { commonConfig, googleConfig, jwtConfig } from './shared';
-import { PermissionModule, AuthModule } from './http';
+import { PermissionModule, AuthModule, UserModule, RoleModule } from './http';
 import { PrismaService } from '@/infrastructure';
 
 @Module({
@@ -17,6 +16,8 @@ import { PrismaService } from '@/infrastructure';
     }),
     PermissionModule,
     AuthModule,
+    UserModule,
+    RoleModule,
     {
       module: PrismaService,
       providers: [PrismaService],
