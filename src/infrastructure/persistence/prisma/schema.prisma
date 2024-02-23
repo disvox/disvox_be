@@ -57,7 +57,6 @@ model Permission {
   subject    String
   conditions String
   inverted   Boolean
-  system     Boolean
   createdAt  DateTime @default(now()) @map(name: "created_at") @db.Timestamptz(0)
   updatedAt  DateTime @updatedAt @map(name: "updated_at") @db.Timestamptz(0)
   roles      Role[]

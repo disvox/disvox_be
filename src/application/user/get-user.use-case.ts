@@ -1,6 +1,7 @@
 import { IUserRepository, User } from '@/domain';
 import { IUseCase } from '@/shared';
 import { AuthUseCase } from '../auth';
+import { createPrismaAbility } from '@casl/prisma';
 
 interface IGetUserInputDto extends Partial<User> {
   userId: string;
@@ -14,10 +15,8 @@ export class GetUserUseCase implements IUseCase<IGetUserInputDto, User | null> {
 
   async execute(input: IGetUserInputDto): Promise<User | null> {
     const { userId, ...restInput } = input;
-    const { permissions } = await this.authUseCase.execute({ userId });
+    const ability = await this.authUseCase.execute({ userId });
 
-    console.log(permissions);
-
-    return null;
+    return this.repository.getOne();
   }
 }

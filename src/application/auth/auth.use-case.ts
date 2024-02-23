@@ -1,30 +1,26 @@
-import { IUserRepository, Permission } from '@/domain';
+import { IUserRepository } from '@/domain';
 import { IUseCase } from '@/shared';
-import { IAuthPayload } from './interfaces/payload.interface';
+import { IAuthPayload, IAbilityFactory, IAbility } from './interfaces';
 
 interface IAuthInputDto extends IAuthPayload {}
 
-interface IAuthOutputDto {
-  permissions: Permission[];
-}
+interface IAuthOutputDto extends IAbility {}
 
 export class AuthUseCase implements IUseCase<IAuthInputDto, IAuthOutputDto> {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(
+    private readonly userRepository: IUserRepository,
+    private readonly abilityFactory: IAbilityFactory,
+  ) {}
   async execute(input: IAuthInputDto): Promise<IAuthOutputDto> {
     const { userId } = input;
 
-    const user = await this.userRepository.getOneWithPopulate(
-      { id: userId },
-      { roles: true, permissions: true },
-    );
-    console.log(user.roles);
+    const user = await this.userRepository.getOneWithPopulate({ id: userId });
 
-    return {
-      permissions: [],
-      // permissions: [
-      //   ...roles.map((role) => role.permissions as Permission[]).flat(),
-      //   ...permissions,
-      // ],
-    };
+    const permissions = [
+      ...user.roles.map((role) => role.permissions).flat(),
+      ...user.permissions,
+    ];
+
+    return this.abilityFactory.defineAbility(permissions);
   }
 }
