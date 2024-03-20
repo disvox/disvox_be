@@ -18,9 +18,9 @@ export type AppAbility = PureAbility<[Action, Subjects], never>;
 
 @Injectable()
 export class AbilityFactory {
-  defineAbility(permission: Permission) {
-    AbilityBuilder(createPrismaAbility);
-  }
+  // defineAbility(permission: Permission) {
+  //   AbilityBuilder(createPrismaAbility);
+  // }
 
   checkAbility(ability: AppAbility) {
     return accessibleBy(ability);

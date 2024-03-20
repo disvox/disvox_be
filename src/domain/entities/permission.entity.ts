@@ -5,7 +5,7 @@ import { Role } from './role.entity';
 export class Permission extends Entity {
   action: string;
   subject: string;
-  conditions: object;
+  conditions: string;
   inverted: boolean;
 }
 
