@@ -29,12 +29,8 @@ export class AuthUseCase implements IUseCase<IAuthInputDto, any> {
       };
     });
 
-    console.log(permissions);
-
     const ability = createPrismaAbility(parsePermissions);
 
-    console.log(ability.can('read'));
-
-    return user;
+    return ability;
   }
 }

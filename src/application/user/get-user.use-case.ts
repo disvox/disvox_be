@@ -16,6 +16,6 @@ export class GetUserUseCase implements IUseCase<IGetUserInputDto, User | null> {
     const { userId, ...restInput } = input;
     const ability = await this.authUseCase.execute({ userId });
 
-    return this.repository.getOne({});
+    return this.repository.getOne({}, ability);
   }
 }
