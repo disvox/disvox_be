@@ -1,30 +1,36 @@
-import { IUserRepository, Permission } from '@/domain';
+import { IUserRepository } from '@/domain';
 import { IUseCase } from '@/shared';
-import { IAuthPayload } from './interfaces/payload.interface';
+import { IAuthPayload, IAbilityFactory, IAbility } from './interfaces';
+import { PureAbility } from '@casl/ability';
+import { createPrismaAbility } from '@casl/prisma';
 
 interface IAuthInputDto extends IAuthPayload {}
 
-interface IAuthOutputDto {
-  permissions: Permission[];
-}
+interface IAuthOutputDto extends IAbility {}
 
-export class AuthUseCase implements IUseCase<IAuthInputDto, IAuthOutputDto> {
-  constructor(private readonly userRepository: IUserRepository) {}
-  async execute(input: IAuthInputDto): Promise<IAuthOutputDto> {
+export class AuthUseCase implements IUseCase<IAuthInputDto, any> {
+  constructor(
+    private readonly userRepository: IUserRepository, // private readonly abilityFactory: IAbilityFactory,
+  ) {}
+  async execute(input: IAuthInputDto): Promise<any> {
     const { userId } = input;
 
-    const user = await this.userRepository.getOneWithPopulate(
-      { id: userId },
-      { roles: true, permissions: true },
-    );
-    console.log(user.roles);
+    const user = await this.userRepository.getOneWithPopulate({ id: userId });
 
-    return {
-      permissions: [],
-      // permissions: [
-      //   ...roles.map((role) => role.permissions as Permission[]).flat(),
-      //   ...permissions,
-      // ],
-    };
+    const permissions = [
+      ...user.roles.map((role) => role.permissions).flat(),
+      ...user.permissions,
+    ];
+    const parsePermissions = permissions.map((permission) => {
+      const parseConditions = JSON.parse(permission.conditions);
+      return {
+        ...permission,
+        conditions: parseConditions,
+      };
+    });
+
+    const ability = createPrismaAbility(parsePermissions);
+
+    return ability;
   }
 }

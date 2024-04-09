@@ -4,5 +4,4 @@ export class CreatedPermissionDto {
   subject: string;
   conditions: any;
   inverted: boolean;
-  system: boolean;
 }

@@ -22,8 +22,10 @@ async function bootstrap() {
   configSwagger(app);
 
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new ArgumentInvalidExceptionFilter());
-  app.useGlobalFilters(new PrismaExceptionFilter());
+  app.useGlobalFilters(
+    new ArgumentInvalidExceptionFilter(),
+    new PrismaExceptionFilter(),
+  );
 
   port = app.get(commonConfig.KEY).port;
   await app.listen(port);

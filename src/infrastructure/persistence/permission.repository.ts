@@ -5,7 +5,11 @@ export class PermissionRepository implements IPermissionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Permission): Promise<Permission> {
-    return this.prisma.permission.create({ data });
+    const permission = await this.prisma.permission.create({
+      data: { ...data, conditions: JSON.stringify(data.conditions) },
+    });
+
+    return { ...permission, conditions: JSON.parse(permission.conditions) };
   }
   getById(id: string): Promise<Permission | null> {
     throw new Error('Method not implemented.');

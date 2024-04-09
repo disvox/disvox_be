@@ -481,6 +481,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@casl/prisma@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@casl/prisma@npm:1.4.1"
+  dependencies:
+    "@ucast/core": "npm:^1.10.0"
+    "@ucast/js": "npm:^3.0.1"
+  peerDependencies:
+    "@casl/ability": ^5.3.0 || ^6.0.0
+    "@prisma/client": ^2.14.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: d2e685a96a00b4c41edaa3d2407d2b68b0ab7a9cfc3cb9d208f9b656387c9b920b7c3964cb267d9717d518645e6e9ca804cffc996ba879605ce2f8e1b0bfa60f
+  languageName: node
+  linkType: hard
+
 "@colors/colors@npm:1.5.0":
   version: 1.5.0
   resolution: "@colors/colors@npm:1.5.0"
@@ -1880,14 +1893,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ucast/core@npm:^1.0.0, @ucast/core@npm:^1.4.1, @ucast/core@npm:^1.6.1":
+"@ucast/core@npm:^1.0.0, @ucast/core@npm:^1.10.0, @ucast/core@npm:^1.4.1, @ucast/core@npm:^1.6.1":
   version: 1.10.2
   resolution: "@ucast/core@npm:1.10.2"
   checksum: bc24a2b02d796b5c14353aaf1c8faf8103157695522e82e9d6d7813a300e631a406d4809030c582bda99a72232a8eb19f25b4d78857f1c9fab2e8fb2028706e8
   languageName: node
   linkType: hard
 
-"@ucast/js@npm:^3.0.0":
+"@ucast/js@npm:^3.0.0, @ucast/js@npm:^3.0.1":
   version: 3.0.3
   resolution: "@ucast/js@npm:3.0.3"
   dependencies:
@@ -3390,6 +3403,7 @@ __metadata:
   resolution: "disvox@workspace:."
   dependencies:
     "@casl/ability": "npm:^6.5.0"
+    "@casl/prisma": "npm:^1.4.1"
     "@nestjs/cli": "npm:^10.0.0"
     "@nestjs/common": "npm:^10.0.0"
     "@nestjs/config": "npm:^3.1.1"

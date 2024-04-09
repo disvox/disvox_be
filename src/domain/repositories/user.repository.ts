@@ -1,14 +1,13 @@
 import { IRepository } from '@/shared';
-import { TUserRelation, User } from '../entities';
+import { Permission, Role, User } from '../entities';
 
-export interface IUserRepository extends IRepository<User & TUserRelation> {
-  getOneWithPopulate(
-    filter: Partial<User & TUserRelation>,
-    populate: {
-      roles: boolean;
-      permissions: boolean;
-    },
-  ): Promise<User & TUserRelation>;
+export interface IUserRepository extends IRepository<User> {
+  getOneWithPopulate(filter: Partial<User>): Promise<
+    User & {
+      roles: (Role & { permissions: Permission[] })[];
+      permissions: Permission[];
+    }
+  >;
 }
 
 export const UserRepositoryToken = Symbol('IUserRepository');

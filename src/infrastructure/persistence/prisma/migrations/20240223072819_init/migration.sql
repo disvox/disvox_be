@@ -38,7 +38,6 @@ CREATE TABLE "permissions" (
     "subject" TEXT NOT NULL,
     "conditions" TEXT NOT NULL,
     "inverted" BOOLEAN NOT NULL,
-    "system" BOOLEAN NOT NULL,
     "created_at" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(0) NOT NULL,
 

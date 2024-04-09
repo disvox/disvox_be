@@ -9,7 +9,6 @@ interface ICreatePermissionDto {
     [key in TConditionOperators]?: Record<string, string>;
   };
   inverted: boolean;
-  system: boolean;
 }
 
 interface ICreatedPermissionDto {
@@ -18,7 +17,6 @@ interface ICreatedPermissionDto {
   subject: string;
   conditions: string;
   inverted: boolean;
-  system: boolean;
 }
 
 export class CreatePermissionUseCase
@@ -35,7 +33,6 @@ export class CreatePermissionUseCase
     permission.subject = input.subject;
     permission.conditions = JSON.stringify(input.conditions);
     permission.inverted = input.inverted;
-    permission.system = input.system;
 
     return this.repository.create(permission);
   }

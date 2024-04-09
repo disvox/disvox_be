@@ -7,7 +7,6 @@ export class Permission extends Entity {
   subject: string;
   conditions: string;
   inverted: boolean;
-  system: boolean;
 }
 
 export type TPermissionRelation = {
