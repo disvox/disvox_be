@@ -1,8 +1,6 @@
 import { IUserRepository } from '@/domain';
 import { IUseCase } from '@/shared';
-import { IAuthPayload, IAbilityFactory, IAbility } from './interfaces';
-import { PureAbility } from '@casl/ability';
-import { createPrismaAbility } from '@casl/prisma';
+import { IAuthPayload, IAbility } from './interfaces';
 
 interface IAuthInputDto extends IAuthPayload {}
 
@@ -17,20 +15,6 @@ export class AuthUseCase implements IUseCase<IAuthInputDto, any> {
 
     const user = await this.userRepository.getOneWithPopulate({ id: userId });
 
-    const permissions = [
-      ...user.roles.map((role) => role.permissions).flat(),
-      ...user.permissions,
-    ];
-    const parsePermissions = permissions.map((permission) => {
-      const parseConditions = JSON.parse(permission.conditions);
-      return {
-        ...permission,
-        conditions: parseConditions,
-      };
-    });
-
-    const ability = createPrismaAbility(parsePermissions);
-
-    return ability;
+    return user;
   }
 }

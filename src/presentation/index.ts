@@ -1,3 +1,3 @@
-export * from './app.module';
-export * from './shared';
 export * from './http';
+export * from './shared';
+export * from './app.module';

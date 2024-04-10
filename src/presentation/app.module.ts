@@ -1,29 +1,31 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { commonConfig, googleConfig, jwtConfig } from './shared';
+import {
+  commonConfig,
+  googleConfig,
+  jwtConfig,
+  databaseConfig,
+} from './shared';
 import { PermissionModule, AuthModule, UserModule, RoleModule } from './http';
-import { PrismaService } from '@/infrastructure';
+import { InfrastructureModule } from './infrastructure.module';
+import { ApplicationModule } from './application.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      load: [commonConfig, jwtConfig, googleConfig],
+      load: [commonConfig, databaseConfig, jwtConfig, googleConfig],
       cache: true,
       expandVariables: true,
     }),
+    ApplicationModule,
+    InfrastructureModule,
     PermissionModule,
     AuthModule,
     UserModule,
     RoleModule,
-    {
-      module: PrismaService,
-      providers: [PrismaService],
-      exports: [PrismaService],
-      global: true,
-    },
   ],
 })
 export class AppModule {}

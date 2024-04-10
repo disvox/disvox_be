@@ -19,7 +19,4 @@ export class CreatePermissionDto {
 
   @ApiProperty()
   inverted: boolean;
-
-  @ApiProperty()
-  system: boolean;
 }

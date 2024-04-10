@@ -2,19 +2,20 @@ import { Controller, Get, Inject, Req, Res, UseGuards } from '@nestjs/common';
 import { CookieOptions, Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 
-import { GoogleGuard } from '../shared/guards/google.guard';
-import { OauthUser } from './dtos/auth.dto';
-import { CreateUserDto } from './dtos';
-import { UserRepository } from '@/infrastructure';
+import { GoogleGuard } from '../shared';
+import { IOauthUser, CreateUserDto } from './dtos';
 import { CreateUserUseCase, IAuthPayload } from '@/application';
-import { UserRepositoryToken } from '@/domain';
+import { IUserRepository } from '@/domain';
+import { USER_REPOSITORY_TOKEN } from '@/infrastructure';
+import { CREATE_USER_USE_CASE_TOKEN } from 'src/application/token';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly jwtService: JwtService,
-    @Inject(UserRepositoryToken)
-    private readonly userRepository: UserRepository,
+    @Inject(USER_REPOSITORY_TOKEN)
+    private readonly userRepository: IUserRepository,
+    @Inject(CREATE_USER_USE_CASE_TOKEN)
     private readonly createUserUseCase: CreateUserUseCase,
   ) {}
 
@@ -22,8 +23,8 @@ export class AuthController {
     return this.jwtService.sign(payload);
   }
 
-  private async generateToken(user: OauthUser & CreateUserDto) {
-    let _user = await this.userRepository.getOne({ email: user.email });
+  private async generateToken(user: IOauthUser & CreateUserDto) {
+    let _user = await this.userRepository.getOne({ email: user.email }, '123');
     if (!_user) {
       _user = await this.createUserUseCase.execute(user);
     }
@@ -50,7 +51,7 @@ export class AuthController {
   @UseGuards(GoogleGuard)
   async callbackGoogle(@Req() req: Request, @Res() res: Response) {
     const token = await this.generateToken(
-      req.user as OauthUser & CreateUserDto,
+      req.user as IOauthUser & CreateUserDto,
     );
 
     res.cookie('access_token', token, this.getDefaultCookieConfig());

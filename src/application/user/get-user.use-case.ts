@@ -3,7 +3,7 @@ import { IUseCase } from '@/shared';
 import { AuthUseCase } from '../auth';
 
 interface IGetUserInputDto extends Partial<User> {
-  userId: string;
+  userId: number;
 }
 
 export class GetUserUseCase implements IUseCase<IGetUserInputDto, User | null> {

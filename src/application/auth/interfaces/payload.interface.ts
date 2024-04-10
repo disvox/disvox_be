@@ -1,3 +1,3 @@
 export interface IAuthPayload {
-  userId: string;
+  userId: number;
 }

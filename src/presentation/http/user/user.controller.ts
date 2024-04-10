@@ -1,14 +1,17 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { GetUserUseCase } from '@/application';
+import { GET_USER_USE_CASE_TOKEN, GetUserUseCase } from '@/application';
 import { JwtAuthGuard, SWAGGER_SETTINGS } from '../shared';
 
 @Controller('users')
 @ApiTags(SWAGGER_SETTINGS.TAGS.USER)
 @UseGuards(JwtAuthGuard)
 export class UserController {
-  constructor(private readonly getUserUseCase: GetUserUseCase) {}
+  constructor(
+    @Inject(GET_USER_USE_CASE_TOKEN)
+    private readonly getUserUseCase: GetUserUseCase,
+  ) {}
 
   @Get(':id')
   async getUser(@Req() req: any) {
