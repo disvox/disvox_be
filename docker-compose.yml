@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   disvox_db:
     image: postgres:latest
@@ -10,6 +12,41 @@ services:
       POSTGRES_DB: disvox
     volumes:
       - disvox_data:/var/lib/postgresql/data
+    networks:
+      - disvox
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+    container_name: jenkins
+    volumes:
+      - jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - jenkins
+
+  jenkins_agent:
+    image: jenkins/ssh-agent:jdk11
+    privileged: true
+    user: root
+    container_name: jenkins_agent
+    expose:
+      - 22
+    environment:
+      - JENKINS_AGENT_SSH_PUBKEY=$JENKINS_AGENT_PUBLIC_KEY
+    networks:
+      - jenkins
 
 volumes:
   disvox_data:
+  jenkins_data:
+
+networks:
+  disvox:
+    driver: bridge
+  jenkins:
+    driver: bridge
