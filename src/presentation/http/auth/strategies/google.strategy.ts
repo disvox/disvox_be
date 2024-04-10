@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 
 import { googleConfig } from '../../../shared';
-import { OauthUser } from '../../auth/dtos';
+import { IOauthUser } from '../dtos';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -28,7 +28,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   ): Promise<any> {
     const { name, emails, photos, provider } = profile;
 
-    const user: OauthUser = {
+    const user: IOauthUser = {
       provider,
       email: emails ? emails[0].value : undefined,
       username: `${name?.givenName} ${name?.familyName}`,

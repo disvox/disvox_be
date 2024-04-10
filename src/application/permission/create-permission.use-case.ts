@@ -1,8 +1,10 @@
 import { IPermissionRepository, Permission } from '@/domain';
 import { IUseCase } from '@/shared';
-import { TConditionOperators } from './enums';
+import { TConditionOperators } from '../../domain/auth/enums';
+import { Inject } from '@nestjs/common';
+import { PERMISSION_REPOSITORY_TOKEN } from '@/infrastructure';
 
-interface ICreatePermissionDto {
+export interface ICreatePermissionDto {
   action: string;
   subject: string;
   conditions: {
@@ -12,17 +14,20 @@ interface ICreatePermissionDto {
 }
 
 interface ICreatedPermissionDto {
-  id: string;
+  id: number;
   action: string;
   subject: string;
-  conditions: string;
+  conditions: unknown;
   inverted: boolean;
 }
 
 export class CreatePermissionUseCase
   implements IUseCase<ICreatePermissionDto, ICreatedPermissionDto>
 {
-  constructor(private readonly repository: IPermissionRepository) {}
+  constructor(
+    @Inject(PERMISSION_REPOSITORY_TOKEN)
+    private readonly repository: IPermissionRepository,
+  ) {}
 
   public async execute(
     input: ICreatePermissionDto,
@@ -31,7 +36,7 @@ export class CreatePermissionUseCase
 
     permission.action = input.action;
     permission.subject = input.subject;
-    permission.conditions = JSON.stringify(input.conditions);
+    permission.conditions = input.conditions;
     permission.inverted = input.inverted;
 
     return this.repository.create(permission);

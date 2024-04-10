@@ -1,5 +1,5 @@
 export class CreatedPermissionDto {
-  id: string;
+  id: number;
   action: string;
   subject: string;
   conditions: any;

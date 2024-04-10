@@ -1,7 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 
-import { CreatePermissionUseCase } from '@/application';
+import {
+  CREATE_PERMISSION_USE_CASE_TOKEN,
+  CreatePermissionUseCase,
+} from '@/application';
 import { CreatePermissionDto, CreatedPermissionDto } from './dtos';
 import { SWAGGER_SETTINGS } from '../shared';
 
@@ -9,6 +12,7 @@ import { SWAGGER_SETTINGS } from '../shared';
 @ApiTags(SWAGGER_SETTINGS.TAGS.PERMISSION)
 export class PermissionController {
   constructor(
+    @Inject(CREATE_PERMISSION_USE_CASE_TOKEN)
     private readonly createPermissionUseCase: CreatePermissionUseCase,
   ) {}
 

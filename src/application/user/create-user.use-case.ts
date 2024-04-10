@@ -9,7 +9,7 @@ interface ICreateUserDto {
 }
 
 interface ICreatedUserDto {
-  id: string;
+  id: number;
   username: string;
   discriminator: string;
   email: string;

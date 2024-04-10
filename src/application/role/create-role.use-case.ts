@@ -7,7 +7,7 @@ interface ICreateRoleDto {
 }
 
 interface ICreatedRoleDto {
-  id: string;
+  id: number;
   name: string;
   isGlobal: boolean;
   permissions: Permission[];

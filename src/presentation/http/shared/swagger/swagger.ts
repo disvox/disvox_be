@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SWAGGER_SETTINGS } from './settings';
 
 export const configSwagger = (app: INestApplication) => {
-  const servers = ['http://localhost:3000'];
+  const servers = ['http://localhost:5000'];
 
   const config = new DocumentBuilder()
     .setTitle(SWAGGER_SETTINGS.TITLE)

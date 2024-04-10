@@ -5,7 +5,6 @@ import * as cookieParser from 'cookie-parser';
 import {
   AppModule,
   ArgumentInvalidExceptionFilter,
-  PrismaExceptionFilter,
   commonConfig,
   configSwagger,
 } from '@/presentation';
@@ -22,10 +21,7 @@ async function bootstrap() {
   configSwagger(app);
 
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(
-    new ArgumentInvalidExceptionFilter(),
-    new PrismaExceptionFilter(),
-  );
+  app.useGlobalFilters(new ArgumentInvalidExceptionFilter());
 
   port = app.get(commonConfig.KEY).port;
   await app.listen(port);
