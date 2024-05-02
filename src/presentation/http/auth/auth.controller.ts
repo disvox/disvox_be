@@ -4,10 +4,13 @@ import { JwtService } from '@nestjs/jwt';
 
 import { GoogleGuard } from '../shared';
 import { IOauthUser, CreateUserDto } from './dtos';
-import { CreateUserUseCase, IAuthPayload } from '@/application';
+import {
+  CreateUserUseCase,
+  IAuthPayload,
+  CREATE_USER_USE_CASE_TOKEN,
+} from '@/application';
 import { IUserRepository } from '@/domain';
 import { USER_REPOSITORY_TOKEN } from '@/infrastructure';
-import { CREATE_USER_USE_CASE_TOKEN } from 'src/application/token';
 
 @Controller('auth')
 export class AuthController {

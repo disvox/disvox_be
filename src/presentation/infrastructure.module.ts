@@ -8,6 +8,7 @@ import {
   USER_REPOSITORY_TOKEN,
   PermissionRepository,
   UserRepository,
+  schema,
 } from '@/infrastructure';
 import { databaseConfig } from './shared/configs';
 
@@ -23,6 +24,7 @@ import { databaseConfig } from './shared/configs';
             connectionString: databaseConf.url,
           },
         },
+        config: { schema: { ...schema } },
       }),
       inject: [databaseConfig.KEY],
     }),

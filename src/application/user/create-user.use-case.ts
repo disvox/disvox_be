@@ -1,6 +1,9 @@
+import { Inject } from '@nestjs/common';
+
 import { IUseCase } from '@/shared';
 import { IUserRepository, User } from '@/domain';
 import { generateRandomNDigitNumber } from '@/utils';
+import { USER_REPOSITORY_TOKEN } from '@/infrastructure';
 
 interface ICreateUserDto {
   username: string;
@@ -13,14 +16,17 @@ interface ICreatedUserDto {
   username: string;
   discriminator: string;
   email: string;
-  avatarUrl: string;
-  lastSeen: Date;
+  avatarUrl: string | null;
+  lastSeen: Date | null;
 }
 
 export class CreateUserUseCase
   implements IUseCase<ICreateUserDto, ICreatedUserDto>
 {
-  constructor(private readonly repository: IUserRepository) {}
+  constructor(
+    @Inject(USER_REPOSITORY_TOKEN)
+    private readonly repository: IUserRepository,
+  ) {}
 
   public async execute(input: ICreateUserDto): Promise<ICreatedUserDto> {
     const user = new User();

@@ -6,8 +6,8 @@ export class User extends Entity {
   username: string;
   discriminator: string;
   email: string;
-  avatarUrl: string;
-  lastSeen: Date;
+  avatarUrl: string | null;
+  lastSeen: Date | null;
 }
 
 export type TUserRelation = {

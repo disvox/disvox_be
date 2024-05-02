@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import {
   integer,
   pgEnum,
@@ -25,9 +25,9 @@ export const subjectEnum = pgEnum(
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
-  username: varchar('username', { length: 30 }),
-  discriminator: varchar('discriminator', { length: 30 }),
-  email: varchar('email', { length: 50 }),
+  username: varchar('username', { length: 30 }).notNull(),
+  discriminator: varchar('discriminator', { length: 30 }).notNull(),
+  email: varchar('email', { length: 50 }).notNull(),
   avatarUrl: varchar('avatar_url', { length: 255 }),
   lastSeen: timestamp('last_seen', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
@@ -35,6 +35,11 @@ export const users = pgTable('users', {
     () => sql`now()`,
   ),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+  roles: many(userRoles),
+  permissions: many(userPermissions),
+}));
 
 export const servers = pgTable('servers', {
   id: serial('id').primaryKey(),
@@ -69,6 +74,11 @@ export const permissions = pgTable('permissions', {
   ),
 });
 
+export const permissionsRelations = relations(permissions, ({ many }) => ({
+  users: many(userPermissions),
+  roles: many(rolePermissions),
+}));
+
 export const roles = pgTable('roles', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 30 }),
@@ -77,6 +87,11 @@ export const roles = pgTable('roles', {
     () => sql`now()`,
   ),
 });
+
+export const rolesRelations = relations(roles, ({ many }) => ({
+  users: many(userRoles),
+  permissions: many(rolePermissions),
+}));
 
 export const userRoles = pgTable(
   'user_roles',
@@ -89,6 +104,11 @@ export const userRoles = pgTable(
   }),
 );
 
+export const userRolesRelations = relations(userRoles, ({ one }) => ({
+  user: one(users, { fields: [userRoles.userId], references: [users.id] }),
+  role: one(roles, { fields: [userRoles.roleId], references: [roles.id] }),
+}));
+
 export const rolePermissions = pgTable(
   'role_permissions',
   {
@@ -100,6 +120,20 @@ export const rolePermissions = pgTable(
   }),
 );
 
+export const rolePermissionsRelations = relations(
+  rolePermissions,
+  ({ one }) => ({
+    role: one(roles, {
+      fields: [rolePermissions.roleId],
+      references: [roles.id],
+    }),
+    permission: one(permissions, {
+      fields: [rolePermissions.permissionId],
+      references: [permissions.id],
+    }),
+  }),
+);
+
 export const userPermissions = pgTable(
   'user_permissions',
   {
@@ -108,5 +142,19 @@ export const userPermissions = pgTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.permissionId] }),
+  }),
+);
+
+export const userPermissionsRelations = relations(
+  userPermissions,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [userPermissions.userId],
+      references: [users.id],
+    }),
+    permission: one(permissions, {
+      fields: [userPermissions.permissionId],
+      references: [permissions.id],
+    }),
   }),
 );
