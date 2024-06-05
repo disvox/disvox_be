@@ -1,29 +1,19 @@
 import { Inject } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
-import * as _ from 'lodash';
+import { and, eq, inArray } from 'drizzle-orm';
+import { unionBy } from 'lodash';
 
 import { IUserRepository, Permission, Role, User } from '@/domain';
-import { schema, users } from './drizzle';
+import {
+  permissions,
+  rolePermissions,
+  roles,
+  schema,
+  userPermissions,
+  userRoles,
+  users,
+} from './drizzle';
 import { DRIZZLE_TOKEN } from '../token';
 import { ExtendedMySql2Database } from './type';
-
-function flattenObject(obj) {
-  // If the object contains only one field, flatten it
-  if (_.isObject(obj) && _.keys(obj).length === 1) {
-    const key = _.keys(obj)[0];
-    return flattenObject(obj[key]);
-  }
-  // If the object contains multiple fields, flatten its child objects
-  if (_.isObject(obj) && !_.isArray(obj)) {
-    const newObj = {};
-    _.forEach(obj, (value, key) => {
-      newObj[key] = flattenObject(value);
-    });
-    return newObj;
-  }
-  // Otherwise, return the original value
-  return obj;
-}
 
 export class UserRepository implements IUserRepository {
   constructor(
@@ -33,51 +23,82 @@ export class UserRepository implements IUserRepository {
 
   async getOneWithPopulate(filter: Partial<User>): Promise<
     User & {
-      roles: (Role & { permissions: Permission[] })[];
+      roles: Role[];
       permissions: Permission[];
     }
   > {
     const conditions = Object.keys(filter).map((item) =>
-      eq(schema.users[item], filter[item]),
+      eq(users[item], filter[item]),
     );
 
-    const result = await this.drizzle.query.users.findFirst({
-      where: and(...conditions),
-      with: {
-        roles: {
-          columns: {
-            roleId: false,
-            userId: false,
-          },
-          with: {
-            role: {
-              with: {
-                permissions: {
-                  columns: {
-                    roleId: false,
-                    permissionId: false,
-                  },
-                  with: {
-                    permission: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        permissions: {
-          columns: {
-            permissionId: false,
-            userId: false,
-          },
-          with: {
-            permission: true,
-          },
-        },
-      },
-    });
+    const [userResult] = await this.drizzle
+      .select()
+      .from(users)
+      .where(and(...conditions));
 
-    return result as any;
+    const userRolesResults = await this.drizzle
+      .select()
+      .from(userRoles)
+      .where(eq(userRoles.userId, userResult.id));
+
+    const roleResults = await this.drizzle
+      .select()
+      .from(roles)
+      .where(
+        inArray(
+          roles.id,
+          userRolesResults.map((userRole) => userRole.roleId),
+        ),
+      );
+
+    const rolePermissionsResults = await this.drizzle
+      .select()
+      .from(rolePermissions)
+      .where(
+        inArray(
+          rolePermissions.roleId,
+          userRolesResults.map((userRole) => userRole.roleId),
+        ),
+      );
+
+    const permissionFromRolesResults = await this.drizzle
+      .select()
+      .from(permissions)
+      .where(
+        inArray(
+          permissions.id,
+          rolePermissionsResults.map(
+            (rolePermission) => rolePermission.permissionId,
+          ),
+        ),
+      );
+
+    const userPermissionsResults = await this.drizzle
+      .select()
+      .from(userPermissions)
+      .where(eq(userPermissions.userId, userResult.id));
+
+    const permissionFromUserResults = await this.drizzle
+      .select()
+      .from(permissions)
+      .where(
+        inArray(
+          permissions.id,
+          userPermissionsResults.map(
+            (userPermission) => userPermission.permissionId,
+          ),
+        ),
+      );
+
+    return {
+      ...userResult,
+      roles: roleResults,
+      permissions: unionBy<Permission>(
+        permissionFromRolesResults,
+        permissionFromUserResults,
+        'id',
+      ),
+    };
   }
 
   async create(data: User): Promise<User> {

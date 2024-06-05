@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsString, IsUUID } from 'class-validator';
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
 export class CreateRoleDto {
   @ApiProperty()
@@ -7,7 +7,7 @@ export class CreateRoleDto {
   name: string;
 
   @ApiProperty()
+  @IsNumber({}, { each: true })
   @IsArray()
-  @IsUUID('4', { each: true })
-  permissionIds: string[];
+  permissionIds: number[];
 }

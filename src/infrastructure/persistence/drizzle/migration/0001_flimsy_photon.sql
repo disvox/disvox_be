@@ -1,0 +1,1 @@
+ALTER TABLE `roles` MODIFY COLUMN `name` varchar(30) NOT NULL;

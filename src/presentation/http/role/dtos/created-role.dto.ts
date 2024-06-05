@@ -23,9 +23,6 @@ export class CreatedRoleDto {
   @ApiProperty()
   name: string;
 
-  @ApiProperty()
-  isGlobal: boolean;
-
   @ApiProperty({ type: () => PermissionDto })
   permissions: Permission[];
 }

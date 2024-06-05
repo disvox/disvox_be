@@ -52,13 +52,15 @@ export const servers = mysqlTable('servers', {
 export const userServers = mysqlTable(
   'user_servers',
   {
-    userId: bigint('user_id', { mode: 'number', unsigned: true }).references(
-      () => users.id,
-    ),
+    userId: bigint('user_id', { mode: 'number', unsigned: true })
+      .references(() => users.id)
+      .notNull(),
     serverId: bigint('server_id', {
       mode: 'number',
       unsigned: true,
-    }).references(() => servers.id),
+    })
+      .references(() => servers.id)
+      .notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.serverId] }),
@@ -82,7 +84,7 @@ export const permissionsRelations = relations(permissions, ({ many }) => ({
 
 export const roles = mysqlTable('roles', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 30 }),
+  name: varchar('name', { length: 30 }).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').$onUpdate(() => sql`now()`),
 });
@@ -95,12 +97,12 @@ export const rolesRelations = relations(roles, ({ many }) => ({
 export const userRoles = mysqlTable(
   'user_roles',
   {
-    userId: bigint('user_id', { mode: 'number', unsigned: true }).references(
-      () => users.id,
-    ),
-    roleId: bigint('role_id', { mode: 'number', unsigned: true }).references(
-      () => roles.id,
-    ),
+    userId: bigint('user_id', { mode: 'number', unsigned: true })
+      .references(() => users.id)
+      .notNull(),
+    roleId: bigint('role_id', { mode: 'number', unsigned: true })
+      .references(() => roles.id)
+      .notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.roleId] }),
@@ -115,13 +117,15 @@ export const userRolesRelations = relations(userRoles, ({ one }) => ({
 export const rolePermissions = mysqlTable(
   'role_permissions',
   {
-    roleId: bigint('role_id', { mode: 'number', unsigned: true }).references(
-      () => roles.id,
-    ),
+    roleId: bigint('role_id', { mode: 'number', unsigned: true })
+      .references(() => roles.id)
+      .notNull(),
     permissionId: bigint('permission_id', {
       mode: 'number',
       unsigned: true,
-    }).references(() => permissions.id),
+    })
+      .references(() => permissions.id)
+      .notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.roleId, table.permissionId] }),
@@ -145,13 +149,15 @@ export const rolePermissionsRelations = relations(
 export const userPermissions = mysqlTable(
   'user_permissions',
   {
-    userId: bigint('user_id', { mode: 'number', unsigned: true }).references(
-      () => users.id,
-    ),
+    userId: bigint('user_id', { mode: 'number', unsigned: true })
+      .references(() => users.id)
+      .notNull(),
     permissionId: bigint('permission_id', {
       mode: 'number',
       unsigned: true,
-    }).references(() => permissions.id),
+    })
+      .references(() => permissions.id)
+      .notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.permissionId] }),

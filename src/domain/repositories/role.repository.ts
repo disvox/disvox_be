@@ -4,7 +4,7 @@ import { Permission, Role } from '../entities';
 export interface IRoleRepository extends IRepository<Role> {
   createWithPermissionIds(
     data: Role,
-    permissionIds: string[],
+    permissionIds: number[],
   ): Promise<Role & { permissions: Permission[] }>;
 }
 

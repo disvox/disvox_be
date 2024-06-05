@@ -8,7 +8,9 @@ import {
   USER_REPOSITORY_TOKEN,
   PermissionRepository,
   UserRepository,
+  RoleRepository,
   schema,
+  ROLE_REPOSITORY_TOKEN,
 } from '@/infrastructure';
 import { databaseConfig } from './shared/configs';
 
@@ -41,7 +43,15 @@ import { databaseConfig } from './shared/configs';
       provide: USER_REPOSITORY_TOKEN,
       useClass: UserRepository,
     },
+    {
+      provide: ROLE_REPOSITORY_TOKEN,
+      useClass: RoleRepository,
+    },
   ],
-  exports: [PERMISSION_REPOSITORY_TOKEN, USER_REPOSITORY_TOKEN],
+  exports: [
+    PERMISSION_REPOSITORY_TOKEN,
+    USER_REPOSITORY_TOKEN,
+    ROLE_REPOSITORY_TOKEN,
+  ],
 })
 export class InfrastructureModule {}
