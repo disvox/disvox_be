@@ -1,17 +1,17 @@
 import { ConfigService } from '@nestjs/config';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { migrate } from 'drizzle-orm/node-postgres/migrator';
+import { drizzle } from 'drizzle-orm/mysql2';
+import { migrate } from 'drizzle-orm/mysql2/migrator';
 import { join } from 'path';
-import { Pool } from 'pg';
 import { config } from 'dotenv';
+import mysql from 'mysql2/promise';
 
 config();
 
 const configService = new ConfigService();
 
 (async function () {
-  const pool = new Pool({
-    connectionString: configService.get('DATABASE_URL'),
+  const pool = mysql.createPool({
+    uri: configService.get('DATABASE_URL'),
   });
 
   const db = drizzle(pool);

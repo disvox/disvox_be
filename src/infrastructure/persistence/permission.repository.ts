@@ -1,21 +1,27 @@
 import { Inject } from '@nestjs/common';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 
 import { IPermissionRepository, Permission } from '@/domain';
-import { schema } from './drizzle';
+import { schema, permissions } from './drizzle';
 import { DRIZZLE_TOKEN } from '../token';
+import { ExtendedMySql2Database } from './type';
+import { eq } from 'drizzle-orm';
 
 export class PermissionRepository implements IPermissionRepository {
   constructor(
     @Inject(DRIZZLE_TOKEN)
-    private readonly drizzle: NodePgDatabase<typeof schema>,
+    private readonly drizzle: ExtendedMySql2Database<typeof schema>,
   ) {}
 
   async create(data: Permission): Promise<Permission> {
+    const [insertedResult] = await this.drizzle
+      .insert(permissions)
+      .values(data);
+
     const [result] = await this.drizzle
-      .insert(schema.permissions)
-      .values(data)
-      .returning();
+      .select()
+      .from(permissions)
+      .where(eq(permissions.id, insertedResult.insertId));
+
     return result;
   }
   getById(id: string): Promise<Permission | null> {

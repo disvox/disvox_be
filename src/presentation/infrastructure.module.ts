@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import { DrizzlePGModule } from '@knaadh/nestjs-drizzle-pg';
+import { DrizzleMySqlModule } from '@knaadh/nestjs-drizzle-mysql2';
 
 import {
   DRIZZLE_TOKEN,
@@ -15,16 +15,19 @@ import { databaseConfig } from './shared/configs';
 @Global()
 @Module({
   imports: [
-    DrizzlePGModule.registerAsync({
+    DrizzleMySqlModule.registerAsync({
       tag: DRIZZLE_TOKEN,
       useFactory: (databaseConf: ConfigType<typeof databaseConfig>) => ({
-        pg: {
+        mysql: {
           connection: 'pool',
           config: {
-            connectionString: databaseConf.url,
+            uri: databaseConf.url,
           },
         },
-        config: { schema: { ...schema } },
+        config: {
+          mode: 'default',
+          schema: { ...schema },
+        },
       }),
       inject: [databaseConfig.KEY],
     }),

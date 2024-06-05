@@ -1,12 +1,12 @@
 {
   "version": "5",
-  "dialect": "pg",
+  "dialect": "mysql",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1712737794253,
-      "tag": "0000_large_black_queen",
+      "when": 1717556376920,
+      "tag": "0000_massive_mastermind",
       "breakpoints": true
     }
   ]

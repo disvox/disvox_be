@@ -1,11 +1,11 @@
 import { Inject } from '@nestjs/common';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { and, eq } from 'drizzle-orm';
 import * as _ from 'lodash';
 
 import { IUserRepository, Permission, Role, User } from '@/domain';
-import { schema } from './drizzle';
+import { schema, users } from './drizzle';
 import { DRIZZLE_TOKEN } from '../token';
+import { ExtendedMySql2Database } from './type';
 
 function flattenObject(obj) {
   // If the object contains only one field, flatten it
@@ -28,7 +28,7 @@ function flattenObject(obj) {
 export class UserRepository implements IUserRepository {
   constructor(
     @Inject(DRIZZLE_TOKEN)
-    private readonly drizzle: NodePgDatabase<typeof schema>,
+    private readonly drizzle: ExtendedMySql2Database<typeof schema>,
   ) {}
 
   async getOneWithPopulate(filter: Partial<User>): Promise<
@@ -81,10 +81,12 @@ export class UserRepository implements IUserRepository {
   }
 
   async create(data: User): Promise<User> {
+    const [insertedResult] = await this.drizzle.insert(users).values(data);
+
     const [result] = await this.drizzle
-      .insert(schema.users)
-      .values(data)
-      .returning();
+      .select()
+      .from(users)
+      .where(eq(users.id, insertedResult.insertId));
     return result;
   }
 
@@ -97,11 +99,11 @@ export class UserRepository implements IUserRepository {
 
   async getOne(filter: Partial<User>, ability: any): Promise<User | null> {
     const conditions = Object.keys(filter).map((item) =>
-      eq(schema.users[item], filter[item]),
+      eq(users[item], filter[item]),
     );
     const [result] = await this.drizzle
       .select()
-      .from(schema.users)
+      .from(users)
       .where(and(...conditions));
 
     return result;

@@ -1,13 +1,13 @@
 import { ConfigService } from '@nestjs/config';
-import type { Config } from 'drizzle-kit';
+import { defineConfig } from 'drizzle-kit';
 
 const configService = new ConfigService();
 
-export default {
+export default defineConfig({
   schema: './src/infrastructure/persistence/drizzle/schema.ts',
   out: './src/infrastructure/persistence/drizzle/migration',
-  driver: 'pg',
+  driver: 'mysql2',
   dbCredentials: {
-    connectionString: configService.get('DATABASE_URL') as string,
+    uri: configService.get('DATABASE_URL') as string,
   },
-} satisfies Config;
+});

@@ -2,16 +2,23 @@ version: '3.8'
 
 services:
   disvox_db:
-    image: postgres:latest
     container_name: disvox_db
-    ports:
-      - '5432:5432'
+    image: mysql:8
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: disvox
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: disvox
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 5s
+      timeout: 10s
+      retries: 10
     volumes:
-      - disvox_data:/var/lib/postgresql/data
+      - disvox_data:/var/lib/mysql
+    ports:
+      - '3309:3306'
     networks:
       - disvox
 
