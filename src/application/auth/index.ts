@@ -1,2 +1,2 @@
-export * from './auth.use-case';
+export * from './auth';
 export * from './interfaces';

@@ -3,7 +3,7 @@ import { ConfigType } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
 import { jwtConfig } from '../../shared';
-import { AuthController } from './auth.controller';
+import { AuthController } from './controller';
 import { GoogleStrategy, JwtStrategy } from './strategies';
 
 @Module({

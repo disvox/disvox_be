@@ -1,3 +1,3 @@
-export * from './action.enum';
-export * from './subject.enum';
-export * from './operator.enum';
+export * from './action';
+export * from './subject';
+export * from './operator';

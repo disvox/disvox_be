@@ -1,6 +1,6 @@
 import { Entity } from '@/shared';
-import { User } from './user.entity';
-import { Role } from './role.entity';
+import { User } from './user';
+import { Role } from './role';
 import { EAction, ESubject } from '../auth';
 
 export class Permission extends Entity {

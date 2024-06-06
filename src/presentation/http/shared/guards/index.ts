@@ -1,2 +1,2 @@
-export * from './jwt.guard';
-export * from './google.guard';
+export * from './jwt';
+export * from './google';

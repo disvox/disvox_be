@@ -1,1 +1,1 @@
-export * from './argument-invalid.filter';
+export * from './argument-invalid';

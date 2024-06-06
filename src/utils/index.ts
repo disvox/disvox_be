@@ -1,2 +1,2 @@
-export * from './random.util';
+export * from './random';
 export * from './replace';

@@ -1,2 +1,2 @@
-export * from './create-role.dto';
-export * from './created-role.dto';
+export * from './create-role';
+export * from './created-role';

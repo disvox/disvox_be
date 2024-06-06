@@ -1,1 +1,1 @@
-export * from './create-role.use-case';
+export * from './create-role';

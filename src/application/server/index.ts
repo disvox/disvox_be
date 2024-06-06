@@ -1,1 +1,1 @@
-export * from './get-servers.use-case';
+export * from './get-servers';

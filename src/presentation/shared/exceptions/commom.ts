@@ -1,4 +1,4 @@
-import { BaseException } from './base.exception';
+import { BaseException } from './base';
 import {
   ARGUMENT_INVALID,
   ARGUMENT_NOT_PROVIDED,

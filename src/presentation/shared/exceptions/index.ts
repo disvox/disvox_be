@@ -1,3 +1,3 @@
-export * from './base.exception';
+export * from './base';
 export * from './exception-codes';
-export * from './common.exception';
+export * from './commom';
