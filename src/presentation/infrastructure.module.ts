@@ -6,11 +6,13 @@ import {
   DRIZZLE_TOKEN,
   PERMISSION_REPOSITORY_TOKEN,
   USER_REPOSITORY_TOKEN,
+  ROLE_REPOSITORY_TOKEN,
+  SERVER_REPOSITORY_TOKEN,
   PermissionRepository,
   UserRepository,
   RoleRepository,
+  ServerRepository,
   schema,
-  ROLE_REPOSITORY_TOKEN,
 } from '@/infrastructure';
 import { databaseConfig } from './shared/configs';
 
@@ -47,11 +49,16 @@ import { databaseConfig } from './shared/configs';
       provide: ROLE_REPOSITORY_TOKEN,
       useClass: RoleRepository,
     },
+    {
+      provide: SERVER_REPOSITORY_TOKEN,
+      useClass: ServerRepository,
+    },
   ],
   exports: [
     PERMISSION_REPOSITORY_TOKEN,
     USER_REPOSITORY_TOKEN,
     ROLE_REPOSITORY_TOKEN,
+    SERVER_REPOSITORY_TOKEN,
   ],
 })
 export class InfrastructureModule {}

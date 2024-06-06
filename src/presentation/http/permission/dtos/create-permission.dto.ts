@@ -7,11 +7,11 @@ import { ConditionValidator } from '../../../shared';
 export class CreatePermissionDto {
   @ApiProperty()
   @IsEnum(EAction)
-  action: string;
+  action: EAction;
 
   @ApiProperty()
   @IsEnum(ESubject)
-  subject: string;
+  subject: ESubject;
 
   @ApiProperty()
   @Validate(ConditionValidator)

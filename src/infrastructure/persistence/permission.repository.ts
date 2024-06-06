@@ -1,10 +1,10 @@
 import { Inject } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 
 import { IPermissionRepository, Permission } from '@/domain';
 import { schema, permissions } from './drizzle';
 import { DRIZZLE_TOKEN } from '../token';
 import { ExtendedMySql2Database } from './type';
-import { eq } from 'drizzle-orm';
 
 export class PermissionRepository implements IPermissionRepository {
   constructor(

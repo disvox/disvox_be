@@ -1,11 +1,12 @@
 import { Entity } from '@/shared';
 import { User } from './user.entity';
 import { Role } from './role.entity';
+import { EAction, ESubject } from '../auth';
 
 export class Permission extends Entity {
-  action: string;
-  subject: string;
-  conditions: unknown;
+  action: EAction;
+  subject: ESubject;
+  conditions: Record<string, any>;
   inverted: boolean;
 }
 

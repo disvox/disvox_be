@@ -7,5 +7,6 @@ export const SWAGGER_SETTINGS = {
     PERMISSION: 'Permission',
     USER: 'User',
     ROLE: 'Role',
+    SERVER: 'Server',
   },
 } as const;

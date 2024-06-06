@@ -8,3 +8,5 @@ export const CREATE_PERMISSION_USE_CASE_TOKEN = Symbol(
 );
 
 export const AUTH_USE_CASE_TOKEN = Symbol('AuthUseCase');
+
+export const GET_SERVERS_USE_CASE_TOKEN = Symbol('GetServersUseCase');

@@ -7,7 +7,13 @@ import {
   jwtConfig,
   databaseConfig,
 } from './shared';
-import { PermissionModule, AuthModule, UserModule, RoleModule } from './http';
+import {
+  PermissionModule,
+  AuthModule,
+  UserModule,
+  RoleModule,
+  ServerModule,
+} from './http';
 import { InfrastructureModule } from './infrastructure.module';
 import { ApplicationModule } from './application.module';
 
@@ -26,6 +32,7 @@ import { ApplicationModule } from './application.module';
     AuthModule,
     UserModule,
     RoleModule,
+    ServerModule,
   ],
 })
 export class AppModule {}

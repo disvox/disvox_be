@@ -3,3 +3,4 @@ export * from './permission';
 export * from './role';
 export * from './auth';
 export * from './token';
+export * from './server';

@@ -10,17 +10,18 @@ import {
   json,
   boolean,
 } from 'drizzle-orm/mysql-core';
+import { MongoQuery } from '@casl/ability';
 
 import { EAction, ESubject } from '@/domain';
 
 export const actionEnum = mysqlEnum(
   'action',
-  Object.values(EAction) as [string, ...string[]],
+  Object.values(EAction) as [EAction, ...EAction[]],
 );
 
 export const subjectEnum = mysqlEnum(
   'subject',
-  Object.values(ESubject) as [string, ...string[]],
+  Object.values(ESubject) as [ESubject, ...ESubject[]],
 );
 
 export const users = mysqlTable('users', {
@@ -41,12 +42,12 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const servers = mysqlTable('servers', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 30 }),
+  name: varchar('name', { length: 30 }).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').$onUpdate(() => sql`now()`),
-  ownerId: bigint('owner_id', { mode: 'number', unsigned: true }).references(
-    () => users.id,
-  ),
+  ownerId: bigint('owner_id', { mode: 'number', unsigned: true })
+    .references(() => users.id)
+    .notNull(),
 });
 
 export const userServers = mysqlTable(
@@ -71,7 +72,7 @@ export const permissions = mysqlTable('permissions', {
   id: serial('id').primaryKey(),
   action: actionEnum.notNull(),
   subject: subjectEnum.notNull(),
-  conditions: json('conditions').notNull(),
+  conditions: json('conditions').$type<MongoQuery>().notNull(),
   inverted: boolean('inverted').default(false).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').$onUpdate(() => sql`now()`),

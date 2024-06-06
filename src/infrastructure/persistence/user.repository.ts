@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, sql } from 'drizzle-orm';
 import { unionBy } from 'lodash';
 
 import { IUserRepository, Permission, Role, User } from '@/domain';
@@ -118,14 +118,14 @@ export class UserRepository implements IUserRepository {
     throw new Error('Method not implemented.');
   }
 
-  async getOne(filter: Partial<User>, ability: any): Promise<User | null> {
+  async getOne(filter: Partial<User>): Promise<User | null> {
     const conditions = Object.keys(filter).map((item) =>
       eq(users[item], filter[item]),
     );
     const [result] = await this.drizzle
       .select()
       .from(users)
-      .where(and(...conditions));
+      .where(sql([filter] as any));
 
     return result;
   }

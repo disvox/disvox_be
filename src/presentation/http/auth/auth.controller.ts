@@ -27,7 +27,7 @@ export class AuthController {
   }
 
   private async generateToken(user: IOauthUser & CreateUserDto) {
-    let _user = await this.userRepository.getOne({ email: user.email }, '123');
+    let _user = await this.userRepository.getOne({ email: user.email });
     if (!_user) {
       _user = await this.createUserUseCase.execute(user);
     }

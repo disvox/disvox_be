@@ -54,7 +54,7 @@ export class RoleRepository implements IRoleRepository {
   getAll(): Promise<Role[]> {
     throw new Error('Method not implemented.');
   }
-  getOne(filter: Partial<Role>, ability: any): Promise<Role | null> {
+  getOne(filter: Partial<Role>): Promise<Role | null> {
     throw new Error('Method not implemented.');
   }
   getMany(filter: Partial<Role>): Promise<Role[]> {

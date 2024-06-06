@@ -9,5 +9,3 @@ export interface IUserRepository extends IRepository<User> {
     }
   >;
 }
-
-export const UserRepositoryToken = Symbol('IUserRepository');
