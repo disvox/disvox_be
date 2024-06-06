@@ -125,7 +125,7 @@ export class UserRepository implements IUserRepository {
     const [result] = await this.drizzle
       .select()
       .from(users)
-      .where(sql([filter] as any));
+      .where(and(...conditions));
 
     return result;
   }

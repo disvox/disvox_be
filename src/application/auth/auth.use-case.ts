@@ -5,6 +5,8 @@ import { EAction, ESubject, IUserRepository } from '@/domain';
 import { IUseCase } from '@/shared';
 import { USER_REPOSITORY_TOKEN } from '@/infrastructure';
 import { IAuthPayload } from './interfaces';
+import { replaceTemplateString } from '@/utils';
+import { CURRENT_USER_ID } from './constants';
 
 interface IAuthInputDto extends IAuthPayload {}
 
@@ -18,8 +20,14 @@ export class AuthUseCase implements IUseCase<IAuthInputDto, IAuthOutputDto> {
   async execute(input: IAuthInputDto): Promise<IAuthOutputDto> {
     const { userId } = input;
 
-    const user = await this.userRepository.getOneWithPopulate({ id: userId });
+    const { permissions } = await this.userRepository.getOneWithPopulate({
+      id: userId,
+    });
 
-    return createMongoAbility<[EAction, ESubject]>(user.permissions);
+    const replaceTemplatePermissions = replaceTemplateString(permissions, {
+      [CURRENT_USER_ID]: userId,
+    });
+
+    return createMongoAbility<[EAction, ESubject]>(replaceTemplatePermissions);
   }
 }

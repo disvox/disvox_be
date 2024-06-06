@@ -1,9 +1,9 @@
 import { Inject } from '@nestjs/common';
-import { sql } from 'drizzle-orm';
+import { inArray, sql } from 'drizzle-orm';
 
 import { IServerRepository, Server } from '@/domain';
 import { ExtendedMySql2Database } from './type';
-import { schema, servers } from './drizzle';
+import { schema, servers, userServers } from './drizzle';
 import { DRIZZLE_TOKEN } from '../token';
 
 export class ServerRepository implements IServerRepository {
@@ -26,10 +26,20 @@ export class ServerRepository implements IServerRepository {
   }
 
   async getMany(filter: string | Partial<Server>): Promise<Server[]> {
+    const userServersResults = await this.drizzle
+      .select()
+      .from(userServers)
+      .where(sql([filter] as any));
+
     return this.drizzle
       .select()
       .from(servers)
-      .where(sql([filter] as any));
+      .where(
+        inArray(
+          servers.id,
+          userServersResults.map((userServers) => userServers.serverId),
+        ),
+      );
   }
 
   update(id: string, data: Partial<Server>): Promise<Server> {
