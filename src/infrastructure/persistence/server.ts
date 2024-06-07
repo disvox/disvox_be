@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { inArray, sql } from 'drizzle-orm';
+import { eq, inArray, sql } from 'drizzle-orm';
 
 import { IServerRepository, Server } from '@/domain';
 import { ExtendedMySql2Database } from './type';
@@ -12,9 +12,21 @@ export class ServerRepository implements IServerRepository {
     private readonly drizzle: ExtendedMySql2Database<typeof schema>,
   ) {}
 
-  create(data: Server): Promise<Server> {
-    throw new Error('Method not implemented.');
+  async create(data: Omit<Server, 'id'>): Promise<Server> {
+    const [insertedResult] = await this.drizzle.insert(servers).values(data);
+
+    await this.drizzle
+      .insert(userServers)
+      .values({ serverId: insertedResult.insertId, userId: data.ownerId });
+
+    const [result] = await this.drizzle
+      .select()
+      .from(servers)
+      .where(eq(servers.id, insertedResult.insertId));
+
+    return result;
   }
+
   getById(id: string): Promise<Server | null> {
     throw new Error('Method not implemented.');
   }

@@ -1,7 +1,7 @@
 import { Entity } from './entity';
 
 export interface IRepository<TEntity extends Entity> {
-  create(data: TEntity): Promise<TEntity>;
+  create(data: Omit<TEntity, 'id'>): Promise<TEntity>;
   getById(id: string): Promise<TEntity | null>;
   getAll(): Promise<TEntity[]>;
   getOne(filter: string | Partial<TEntity>): Promise<TEntity | null>;

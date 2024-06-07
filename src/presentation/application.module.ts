@@ -7,12 +7,14 @@ import {
   CREATE_USER_USE_CASE_TOKEN,
   GET_USER_USE_CASE_TOKEN,
   GET_SERVERS_USE_CASE_TOKEN,
+  CREATE_SERVER_USE_CASE_TOKEN,
   AuthUseCase,
   CreateUserUseCase,
   GetUserUseCase,
   CreateRoleUseCase,
   CreatePermissionUseCase,
   GetServersUseCase,
+  CreateServerUseCase,
 } from '@/application';
 
 @Global()
@@ -42,6 +44,10 @@ import {
       provide: GET_SERVERS_USE_CASE_TOKEN,
       useClass: GetServersUseCase,
     },
+    {
+      provide: CREATE_SERVER_USE_CASE_TOKEN,
+      useClass: CreateServerUseCase,
+    },
   ],
   exports: [
     CREATE_USER_USE_CASE_TOKEN,
@@ -50,6 +56,7 @@ import {
     CREATE_ROLE_USE_CASE_TOKEN,
     AUTH_USE_CASE_TOKEN,
     GET_SERVERS_USE_CASE_TOKEN,
+    CREATE_SERVER_USE_CASE_TOKEN,
   ],
 })
 export class ApplicationModule {}
