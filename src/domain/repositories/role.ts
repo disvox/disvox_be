@@ -7,5 +7,3 @@ export interface IRoleRepository extends IRepository<Role> {
     permissionIds: number[],
   ): Promise<Role & { permissions: Permission[] }>;
 }
-
-export const RoleRepositoryToken = Symbol('IRoleRepository');

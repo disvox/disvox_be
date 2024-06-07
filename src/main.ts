@@ -4,7 +4,9 @@ import * as cookieParser from 'cookie-parser';
 
 import {
   AppModule,
-  ArgumentInvalidExceptionFilter,
+  AllExceptionFilter,
+  HttpExceptionFilter,
+  ValidatorExceptionFilter,
   commonConfig,
   configSwagger,
 } from '@/presentation';
@@ -20,8 +22,18 @@ async function bootstrap() {
 
   configSwagger(app);
 
-  app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new ArgumentInvalidExceptionFilter());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
+
+  app.useGlobalFilters(
+    new AllExceptionFilter(),
+    new HttpExceptionFilter(),
+    new ValidatorExceptionFilter(),
+  );
 
   port = app.get(commonConfig.KEY).port;
   await app.listen(port);

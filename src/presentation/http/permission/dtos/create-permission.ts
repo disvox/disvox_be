@@ -1,9 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, Validate } from 'class-validator';
+import { IsBoolean, IsEnum, IsObject } from 'class-validator';
 
 import { EAction, ESubject } from '@/application';
-import { ConditionValidator } from '../../../shared';
-
 export class CreatePermissionDto {
   @ApiProperty()
   @IsEnum(EAction)
@@ -14,9 +12,10 @@ export class CreatePermissionDto {
   subject: ESubject;
 
   @ApiProperty()
-  @Validate(ConditionValidator)
+  @IsObject()
   conditions: object;
 
   @ApiProperty()
+  @IsBoolean()
   inverted: boolean;
 }
