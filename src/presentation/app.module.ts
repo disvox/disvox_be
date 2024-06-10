@@ -6,6 +6,7 @@ import {
   googleConfig,
   jwtConfig,
   databaseConfig,
+  ClassSerializerInterceptor,
 } from './shared';
 import {
   PermissionModule,
@@ -16,6 +17,14 @@ import {
 } from './http';
 import { InfrastructureModule } from './infrastructure.module';
 import { ApplicationModule } from './application.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+
+const providers = [
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: ClassSerializerInterceptor,
+  },
+];
 
 @Module({
   imports: [
@@ -34,5 +43,6 @@ import { ApplicationModule } from './application.module';
     RoleModule,
     ServerModule,
   ],
+  providers: [...providers],
 })
 export class AppModule {}

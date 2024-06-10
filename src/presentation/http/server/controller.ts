@@ -17,10 +17,12 @@ import {
 } from '@/application';
 import { JwtAuthGuard, SWAGGER_SETTINGS } from '../shared';
 import { Server } from '@/domain';
-import { CreateServerDto } from './dtos';
+import { CreateServerDto, ServerResponseDto } from './dtos';
+import { SerializeClass } from '../../shared';
 
 @ApiTags(SWAGGER_SETTINGS.TAGS.SERVER)
 @UseGuards(JwtAuthGuard)
+@SerializeClass(ServerResponseDto)
 @Controller('servers')
 export class ServerController {
   constructor(

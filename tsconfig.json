@@ -24,8 +24,7 @@
       "@/application": ["./src/application"],
       "@/presentation": ["./src/presentation"],
       "@/shared": ["./src/shared"],
-      "@/utils": ["./src/utils"],
-      "@/prisma": ["./__generated__/prisma"]
+      "@/utils": ["./src/utils"]
     }
   }
 }
