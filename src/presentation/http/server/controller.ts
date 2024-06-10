@@ -23,13 +23,13 @@ export class ServerController {
     private readonly getServersUseCase: GetServersUseCase,
     @Inject(CREATE_SERVER_USE_CASE_TOKEN)
     private readonly createServerUseCase: CreateServerUseCase,
-    private readonly clsService: ClsService,
+    private readonly cls: ClsService,
   ) {}
 
   @Get()
   async getServers(): Promise<any> {
     return this.getServersUseCase.execute({
-      userId: this.clsService.get('user.id'),
+      userId: this.cls.get('user.id'),
     });
   }
 
@@ -37,7 +37,7 @@ export class ServerController {
   async createServer(@Body() input: CreateServerDto): Promise<Server> {
     return this.createServerUseCase.execute({
       ...input,
-      userId: this.clsService.get('user.id'),
+      userId: this.cls.get('user.id'),
     });
   }
 }

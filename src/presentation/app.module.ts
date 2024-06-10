@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
 
 import {
   commonConfig,
@@ -9,6 +9,11 @@ import {
   databaseConfig,
   ClassSerializerInterceptor,
   cookieConfig,
+  LoggerInterceptor,
+  LoggerModule,
+  AllExceptionFilter,
+  HttpExceptionFilter,
+  ValidatorExceptionFilter,
 } from './shared';
 import {
   PermissionModule,
@@ -25,12 +30,29 @@ import { routes } from './route';
 const providers = [
   {
     provide: APP_INTERCEPTOR,
+    useClass: LoggerInterceptor,
+  },
+  {
+    provide: APP_INTERCEPTOR,
     useClass: ClassSerializerInterceptor,
+  },
+  {
+    provide: APP_FILTER,
+    useClass: AllExceptionFilter,
+  },
+  {
+    provide: APP_FILTER,
+    useClass: HttpExceptionFilter,
+  },
+  {
+    provide: APP_FILTER,
+    useClass: ValidatorExceptionFilter,
   },
 ];
 
 @Module({
   imports: [
+    LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

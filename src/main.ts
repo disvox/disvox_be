@@ -4,13 +4,11 @@ import * as cookieParser from 'cookie-parser';
 
 import {
   AppModule,
-  AllExceptionFilter,
-  HttpExceptionFilter,
-  ValidatorExceptionFilter,
   commonConfig,
   configSwagger,
   cookieConfig,
   TCookieConfig,
+  ContextMiddleware,
 } from '@/presentation';
 
 let port: number;
@@ -20,6 +18,8 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
+  // config global middlewares
+  app.use(new ContextMiddleware().use);
   app.use(cookieParser(app.get<TCookieConfig>(cookieConfig.KEY).secret));
 
   configSwagger(app);
@@ -29,12 +29,6 @@ async function bootstrap() {
       whitelist: true,
       transform: true,
     }),
-  );
-
-  app.useGlobalFilters(
-    new AllExceptionFilter(),
-    new HttpExceptionFilter(),
-    new ValidatorExceptionFilter(),
   );
 
   port = app.get(commonConfig.KEY).port;

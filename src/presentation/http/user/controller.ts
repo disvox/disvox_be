@@ -15,13 +15,13 @@ export class UserController {
   constructor(
     @Inject(GET_USER_USE_CASE_TOKEN)
     private readonly getUserUseCase: GetUserUseCase,
-    private readonly clsService: ClsService,
+    private readonly cls: ClsService,
   ) {}
 
   @Get(':id')
   async getUser() {
     return this.getUserUseCase.execute({
-      userId: this.clsService.get('user.id'),
+      userId: this.cls.get('user.id'),
     });
   }
 }
