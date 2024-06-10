@@ -20,7 +20,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
-  app.use(cookieParser());
+  app.use(cookieParser(app.get<TCookieConfig>(cookieConfig.KEY).secret));
 
   configSwagger(app);
 
@@ -36,8 +36,6 @@ async function bootstrap() {
     new HttpExceptionFilter(),
     new ValidatorExceptionFilter(),
   );
-
-  app.use(cookieParser(app.get<TCookieConfig>(cookieConfig.KEY).secret));
 
   port = app.get(commonConfig.KEY).port;
   await app.listen(port);

@@ -1,5 +1,5 @@
 import { Controller, Get, Inject, Req, Res, UseGuards } from '@nestjs/common';
-import { CookieOptions, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 
 import { GoogleGuard } from '../shared';
@@ -11,6 +11,8 @@ import {
 } from '@/application';
 import { IUserRepository } from '@/domain';
 import { USER_REPOSITORY_TOKEN } from '@/infrastructure';
+import { ACCESS_TOKEN_KEY } from './constants';
+import { TCookieConfig, cookieConfig } from '../../shared';
 
 @Controller()
 export class AuthController {
@@ -20,10 +22,12 @@ export class AuthController {
     private readonly userRepository: IUserRepository,
     @Inject(CREATE_USER_USE_CASE_TOKEN)
     private readonly createUserUseCase: CreateUserUseCase,
+    @Inject(cookieConfig.KEY)
+    private cookieConf: TCookieConfig,
   ) {}
 
-  private generateJwt(payload: IAuthPayload) {
-    return this.jwtService.sign(payload);
+  private async generateJwt(payload: IAuthPayload) {
+    return this.jwtService.signAsync(payload);
   }
 
   private async generateToken(user: IOauthUser & CreateUserDto) {
@@ -35,20 +39,12 @@ export class AuthController {
     return this.generateJwt({ userId: _user.id });
   }
 
-  getDefaultCookieConfig(options?: CookieOptions): CookieOptions {
-    return {
-      maxAge: 2592000000,
-      sameSite: 'none',
-      secure: true,
-      httpOnly: true,
-      ...options,
-    };
-  }
-
   @Get('/google')
   @UseGuards(GoogleGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async loginGoogle() {}
+  async loginGoogle() {
+    /* empty on purpose */
+  }
 
   @Get('/google/callback')
   @UseGuards(GoogleGuard)
@@ -57,7 +53,7 @@ export class AuthController {
       req.user as IOauthUser & CreateUserDto,
     );
 
-    res.cookie('access_token', token, this.getDefaultCookieConfig());
+    res.cookie(ACCESS_TOKEN_KEY, token, this.cookieConf.options);
 
     return res.redirect('http://localhost:5173/login/success');
   }

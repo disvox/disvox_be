@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import {
@@ -19,6 +11,7 @@ import { JwtAuthGuard, SWAGGER_SETTINGS } from '../shared';
 import { Server } from '@/domain';
 import { CreateServerDto, ServerResponseDto } from './dtos';
 import { SerializeClass } from '../../shared';
+import { ClsService } from 'nestjs-cls';
 
 @ApiTags(SWAGGER_SETTINGS.TAGS.SERVER)
 @UseGuards(JwtAuthGuard)
@@ -30,18 +23,21 @@ export class ServerController {
     private readonly getServersUseCase: GetServersUseCase,
     @Inject(CREATE_SERVER_USE_CASE_TOKEN)
     private readonly createServerUseCase: CreateServerUseCase,
+    private readonly clsService: ClsService,
   ) {}
 
   @Get()
-  async getServers(@Req() req: any): Promise<any> {
-    return this.getServersUseCase.execute({ userId: req.user });
+  async getServers(): Promise<any> {
+    return this.getServersUseCase.execute({
+      userId: this.clsService.get('user.id'),
+    });
   }
 
   @Post()
-  async createServer(
-    @Req() req: any,
-    @Body() input: CreateServerDto,
-  ): Promise<Server> {
-    return this.createServerUseCase.execute({ ...input, userId: req.user });
+  async createServer(@Body() input: CreateServerDto): Promise<Server> {
+    return this.createServerUseCase.execute({
+      ...input,
+      userId: this.clsService.get('user.id'),
+    });
   }
 }

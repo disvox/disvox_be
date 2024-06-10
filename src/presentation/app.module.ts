@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
 
 import {
   commonConfig,
@@ -19,7 +20,6 @@ import {
 } from './http';
 import { InfrastructureModule } from './infrastructure.module';
 import { ApplicationModule } from './application.module';
-import { APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
 import { routes } from './route';
 
 const providers = [
