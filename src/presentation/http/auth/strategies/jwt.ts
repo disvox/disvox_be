@@ -1,36 +1,31 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { Strategy } from 'passport-jwt';
 
-import { jwtConfig } from '../../../shared';
-import { IAuthPayload, ExceptionCode } from '@/application';
-import { HttpException } from '@/shared';
+import { IAuthPayload } from '@/application';
+import { TJwtConfig, jwtConfig } from '../../../shared';
+import { ACCESS_TOKEN_KEY } from '../constants';
+import { ClsService } from 'nestjs-cls';
+
+const cookieExtractor = (req: Request) => {
+  return req.signedCookies[ACCESS_TOKEN_KEY];
+};
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
-    @Inject(jwtConfig.KEY) private jwtConf: ConfigType<typeof jwtConfig>,
+    @Inject(jwtConfig.KEY) private jwtConf: TJwtConfig,
+    private readonly cls: ClsService,
   ) {
-    const extractJwtFromCookie = (req: Request) => {
-      if (!req.cookies || !req.cookies['access_token'])
-        throw new HttpException({
-          code: ExceptionCode.ActionRequireAuthorize,
-          statusCode: 401,
-          message: 'You must log in to do this action',
-        });
-      return req?.cookies['access_token'];
-    };
-
     super({
-      ignoreExpiration: false,
       secretOrKey: jwtConf.secret,
-      jwtFromRequest: extractJwtFromCookie,
+      jwtFromRequest: cookieExtractor,
     });
   }
 
   async validate(payload: IAuthPayload) {
-    return payload.userId;
+    this.cls.set('user.id', payload.userId);
+    return true;
   }
 }

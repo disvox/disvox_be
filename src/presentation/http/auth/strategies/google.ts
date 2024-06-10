@@ -1,16 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 
-import { googleConfig } from '../../../shared';
+import { TGoogleConfig, googleConfig } from '../../../shared';
 import { IOauthUser } from '../dtos';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     @Inject(googleConfig.KEY)
-    private googleConf: ConfigType<typeof googleConfig>,
+    private googleConf: TGoogleConfig,
   ) {
     super({
       clientID: googleConf.clientId,

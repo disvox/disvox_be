@@ -7,6 +7,7 @@ import {
   jwtConfig,
   databaseConfig,
   ClassSerializerInterceptor,
+  cookieConfig,
 } from './shared';
 import {
   PermissionModule,
@@ -14,6 +15,7 @@ import {
   UserModule,
   RoleModule,
   ServerModule,
+  ContextModule,
 } from './http';
 import { InfrastructureModule } from './infrastructure.module';
 import { ApplicationModule } from './application.module';
@@ -32,11 +34,18 @@ const providers = [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      load: [commonConfig, databaseConfig, jwtConfig, googleConfig],
+      load: [
+        commonConfig,
+        databaseConfig,
+        jwtConfig,
+        googleConfig,
+        cookieConfig,
+      ],
       cache: true,
       expandVariables: true,
     }),
     RouterModule.register(routes),
+    ContextModule,
     ApplicationModule,
     InfrastructureModule,
     PermissionModule,

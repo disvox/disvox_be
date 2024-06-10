@@ -9,6 +9,8 @@ import {
   ValidatorExceptionFilter,
   commonConfig,
   configSwagger,
+  cookieConfig,
+  TCookieConfig,
 } from '@/presentation';
 
 let port: number;
@@ -34,6 +36,8 @@ async function bootstrap() {
     new HttpExceptionFilter(),
     new ValidatorExceptionFilter(),
   );
+
+  app.use(cookieParser(app.get<TCookieConfig>(cookieConfig.KEY).secret));
 
   port = app.get(commonConfig.KEY).port;
   await app.listen(port);

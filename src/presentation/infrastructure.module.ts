@@ -1,5 +1,4 @@
 import { Global, Module } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
 import { DrizzleMySqlModule } from '@knaadh/nestjs-drizzle-mysql2';
 
 import {
@@ -14,14 +13,14 @@ import {
   ServerRepository,
   schema,
 } from '@/infrastructure';
-import { databaseConfig } from './shared/configs';
+import { TDatabaseConfig, databaseConfig } from './shared/configs';
 
 @Global()
 @Module({
   imports: [
     DrizzleMySqlModule.registerAsync({
       tag: DRIZZLE_TOKEN,
-      useFactory: (databaseConf: ConfigType<typeof databaseConfig>) => ({
+      useFactory: (databaseConf: TDatabaseConfig) => ({
         mysql: {
           connection: 'pool',
           config: {

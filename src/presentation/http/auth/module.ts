@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
-import { jwtConfig } from '../../shared';
+import { TJwtConfig, jwtConfig } from '../../shared';
 import { AuthController } from './controller';
 import { GoogleStrategy, JwtStrategy } from './strategies';
 
 @Module({
   imports: [
     JwtModule.registerAsync({
-      useFactory: (jwtConf: ConfigType<typeof jwtConfig>) => ({
+      useFactory: (jwtConf: TJwtConfig) => ({
         global: true,
         secret: jwtConf.secret,
         signOptions: { expiresIn: jwtConf.expiresIn },
