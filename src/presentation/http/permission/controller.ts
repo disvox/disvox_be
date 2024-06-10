@@ -8,7 +8,7 @@ import {
 import { CreatePermissionDto, CreatedPermissionDto } from './dtos';
 import { SWAGGER_SETTINGS } from '../shared';
 
-@Controller('permissions')
+@Controller()
 @ApiTags(SWAGGER_SETTINGS.TAGS.PERMISSION)
 export class PermissionController {
   constructor(

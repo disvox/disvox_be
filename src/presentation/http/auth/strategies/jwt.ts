@@ -1,11 +1,12 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { Strategy } from 'passport-jwt';
 
 import { jwtConfig } from '../../../shared';
-import { IAuthPayload } from '@/application';
+import { IAuthPayload, ExceptionCode } from '@/application';
+import { HttpException } from '@/shared';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -14,7 +15,11 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   ) {
     const extractJwtFromCookie = (req: Request) => {
       if (!req.cookies || !req.cookies['access_token'])
-        throw new UnauthorizedException('You must log in to do this action');
+        throw new HttpException({
+          code: ExceptionCode.ActionRequireAuthorize,
+          statusCode: 401,
+          message: 'You must log in to do this action',
+        });
       return req?.cookies['access_token'];
     };
 

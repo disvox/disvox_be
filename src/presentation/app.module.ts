@@ -17,7 +17,8 @@ import {
 } from './http';
 import { InfrastructureModule } from './infrastructure.module';
 import { ApplicationModule } from './application.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR, RouterModule } from '@nestjs/core';
+import { routes } from './route';
 
 const providers = [
   {
@@ -35,6 +36,7 @@ const providers = [
       cache: true,
       expandVariables: true,
     }),
+    RouterModule.register(routes),
     ApplicationModule,
     InfrastructureModule,
     PermissionModule,

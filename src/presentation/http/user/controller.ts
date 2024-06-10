@@ -4,7 +4,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { GET_USER_USE_CASE_TOKEN, GetUserUseCase } from '@/application';
 import { JwtAuthGuard, SWAGGER_SETTINGS } from '../shared';
 
-@Controller('users')
+@Controller()
 @ApiTags(SWAGGER_SETTINGS.TAGS.USER)
 @UseGuards(JwtAuthGuard)
 export class UserController {

@@ -7,7 +7,7 @@ import { SWAGGER_SETTINGS } from '../shared';
 import { CreateRoleDto, CreatedRoleDto } from './dtos';
 
 @ApiTags(SWAGGER_SETTINGS.TAGS.ROLE)
-@Controller('roles')
+@Controller()
 export class RoleController {
   constructor(
     @Inject(CREATE_ROLE_USE_CASE_TOKEN)

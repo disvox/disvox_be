@@ -23,7 +23,7 @@ import { SerializeClass } from '../../shared';
 @ApiTags(SWAGGER_SETTINGS.TAGS.SERVER)
 @UseGuards(JwtAuthGuard)
 @SerializeClass(ServerResponseDto)
-@Controller('servers')
+@Controller()
 export class ServerController {
   constructor(
     @Inject(GET_SERVERS_USE_CASE_TOKEN)

@@ -12,7 +12,7 @@ import {
 import { IUserRepository } from '@/domain';
 import { USER_REPOSITORY_TOKEN } from '@/infrastructure';
 
-@Controller('auth')
+@Controller()
 export class AuthController {
   constructor(
     private readonly jwtService: JwtService,
