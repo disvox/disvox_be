@@ -4,6 +4,7 @@ export const SWAGGER_SETTINGS = {
   DESCRIPTION: 'API Documentation for Disvox',
   VERSION: '0.1',
   TAGS: {
+    AUTH: 'Auth',
     PERMISSION: 'Permission',
     USER: 'User',
     ROLE: 'Role',

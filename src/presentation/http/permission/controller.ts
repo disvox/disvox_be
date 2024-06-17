@@ -1,26 +1,35 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import {
   CREATE_PERMISSION_USE_CASE_TOKEN,
   CreatePermissionUseCase,
 } from '@/application';
-import { CreatePermissionDto, CreatedPermissionDto } from './dtos';
-import { SWAGGER_SETTINGS } from '../shared';
+import { CreatePermissionDto, PermissionResponseDto } from './dtos';
+import {
+  ApiExceptionResponse,
+  ESwaggerDescription,
+  SWAGGER_SETTINGS,
+} from '../shared';
 
-@Controller()
 @ApiTags(SWAGGER_SETTINGS.TAGS.PERMISSION)
+@ApiExceptionResponse()
+@Controller()
 export class PermissionController {
   constructor(
     @Inject(CREATE_PERMISSION_USE_CASE_TOKEN)
     private readonly createPermissionUseCase: CreatePermissionUseCase,
   ) {}
 
-  @Post()
+  @ApiCreatedResponse({
+    type: PermissionResponseDto,
+    description: ESwaggerDescription.Created,
+  })
   @ApiBody({ type: CreatePermissionDto })
-  async create(
+  @Post()
+  async createPermission(
     @Body() input: CreatePermissionDto,
-  ): Promise<CreatedPermissionDto> {
+  ): Promise<PermissionResponseDto> {
     return this.createPermissionUseCase.execute(input);
   }
 }

@@ -3,14 +3,14 @@ import { Expose } from 'class-transformer';
 
 export class ServerResponseDto {
   @Expose()
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   id: number;
 
   @Expose()
-  @ApiProperty()
+  @ApiProperty({ example: 'Server1' })
   name: string;
 
   @Expose({ name: 'ownerId' })
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   owner_id: number;
 }

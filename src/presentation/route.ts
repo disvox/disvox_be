@@ -9,20 +9,20 @@ import {
 
 export const routes: Routes = [
   {
-    path: 'permission',
-    module: PermissionModule,
-  },
-  {
-    path: 'users',
-    module: UserModule,
-  },
-  {
     path: 'auth',
     module: AuthModule,
   },
   {
+    path: 'permission',
+    module: PermissionModule,
+  },
+  {
     path: 'roles',
     module: RoleModule,
+  },
+  {
+    path: 'users',
+    module: UserModule,
   },
   {
     path: 'servers',

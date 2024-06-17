@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ClsService } from 'nestjs-cls';
 
 import {
   CREATE_SERVER_USE_CASE_TOKEN,
@@ -7,13 +8,18 @@ import {
   GET_SERVERS_USE_CASE_TOKEN,
   GetServersUseCase,
 } from '@/application';
-import { JwtAuthGuard, SWAGGER_SETTINGS } from '../shared';
 import { Server } from '@/domain';
+import { SerializeClass } from '@/presentation/shared';
+import {
+  JwtAuthGuard,
+  SWAGGER_SETTINGS,
+  ApiExceptionResponse,
+  ESwaggerDescription,
+} from '../shared';
 import { CreateServerDto, ServerResponseDto } from './dtos';
-import { SerializeClass } from '../../shared';
-import { ClsService } from 'nestjs-cls';
 
 @ApiTags(SWAGGER_SETTINGS.TAGS.SERVER)
+@ApiExceptionResponse()
 @UseGuards(JwtAuthGuard)
 @SerializeClass(ServerResponseDto)
 @Controller()
@@ -27,6 +33,11 @@ export class ServerController {
   ) {}
 
   @Get()
+  @ApiOkResponse({
+    type: ServerResponseDto,
+    isArray: true,
+    description: ESwaggerDescription.OK,
+  })
   async getServers(): Promise<any> {
     return this.getServersUseCase.execute({
       userId: this.cls.get('user.id'),
@@ -34,6 +45,10 @@ export class ServerController {
   }
 
   @Post()
+  @ApiCreatedResponse({
+    type: ServerResponseDto,
+    description: ESwaggerDescription.Created,
+  })
   async createServer(@Body() input: CreateServerDto): Promise<Server> {
     return this.createServerUseCase.execute({
       ...input,

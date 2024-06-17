@@ -1,9 +1,8 @@
 import { Controller, Get, Inject, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
-import { GoogleGuard } from '../shared';
-import { IOauthUser, CreateUserDto } from './dtos';
 import {
   CreateUserUseCase,
   IAuthPayload,
@@ -11,9 +10,18 @@ import {
 } from '@/application';
 import { IUserRepository } from '@/domain';
 import { USER_REPOSITORY_TOKEN } from '@/infrastructure';
+import { TCookieConfig, cookieConfig } from '@/presentation/shared';
+import {
+  ApiExceptionResponse,
+  ESwaggerDescription,
+  GoogleGuard,
+  SWAGGER_SETTINGS,
+} from '../shared';
+import { IOauthUser, CreateUserDto } from './dtos';
 import { ACCESS_TOKEN_KEY } from './constants';
-import { TCookieConfig, cookieConfig } from '../../shared';
 
+@ApiExceptionResponse()
+@ApiTags(SWAGGER_SETTINGS.TAGS.AUTH)
 @Controller()
 export class AuthController {
   constructor(
@@ -39,6 +47,7 @@ export class AuthController {
     return this.generateJwt({ userId: _user.id });
   }
 
+  @ApiOkResponse({ description: ESwaggerDescription.OK })
   @Get('/google')
   @UseGuards(GoogleGuard)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -46,6 +55,7 @@ export class AuthController {
     /* empty on purpose */
   }
 
+  @ApiOkResponse({ description: ESwaggerDescription.OK })
   @Get('/google/callback')
   @UseGuards(GoogleGuard)
   async callbackGoogle(@Req() req: Request, @Res() res: Response) {

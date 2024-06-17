@@ -1,2 +1,2 @@
 export * from './create-permission';
-export * from './created-permission';
+export * from './response';

@@ -22,6 +22,7 @@
       "@/infrastructure/*": ["./src/infrastructure/*"],
       "@/infrastructure": ["./src/infrastructure"],
       "@/application": ["./src/application"],
+      "@/presentation/*": ["./src/presentation/*"],
       "@/presentation": ["./src/presentation"],
       "@/shared": ["./src/shared"],
       "@/utils": ["./src/utils"]
