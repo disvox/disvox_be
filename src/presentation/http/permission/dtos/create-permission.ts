@@ -3,11 +3,11 @@ import { IsBoolean, IsEnum, IsObject } from 'class-validator';
 
 import { EAction, ESubject } from '@/domain';
 export class CreatePermissionDto {
-  @ApiProperty()
+  @ApiProperty({ example: EAction.Read })
   @IsEnum(EAction)
   action: EAction;
 
-  @ApiProperty()
+  @ApiProperty({ example: ESubject.Server })
   @IsEnum(ESubject)
   subject: ESubject;
 
@@ -15,7 +15,7 @@ export class CreatePermissionDto {
   @IsObject()
   conditions: Record<string, any>;
 
-  @ApiProperty()
+  @ApiProperty({ example: false })
   @IsBoolean()
   inverted: boolean;
 }

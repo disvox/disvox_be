@@ -3,6 +3,7 @@ import { Global, Module } from '@nestjs/common';
 import {
   AUTH_USE_CASE_TOKEN,
   CREATE_PERMISSION_USE_CASE_TOKEN,
+  GET_PERMISSIONS_USE_CASE_TOKEN,
   CREATE_ROLE_USE_CASE_TOKEN,
   CREATE_USER_USE_CASE_TOKEN,
   GET_USER_USE_CASE_TOKEN,
@@ -13,6 +14,7 @@ import {
   GetUserUseCase,
   CreateRoleUseCase,
   CreatePermissionUseCase,
+  GetPermissionsUseCase,
   GetServersUseCase,
   CreateServerUseCase,
 } from '@/application';
@@ -37,6 +39,10 @@ import {
       useClass: CreatePermissionUseCase,
     },
     {
+      provide: GET_PERMISSIONS_USE_CASE_TOKEN,
+      useClass: GetPermissionsUseCase,
+    },
+    {
       provide: AUTH_USE_CASE_TOKEN,
       useClass: AuthUseCase,
     },
@@ -53,6 +59,7 @@ import {
     CREATE_USER_USE_CASE_TOKEN,
     GET_USER_USE_CASE_TOKEN,
     CREATE_PERMISSION_USE_CASE_TOKEN,
+    GET_PERMISSIONS_USE_CASE_TOKEN,
     CREATE_ROLE_USE_CASE_TOKEN,
     AUTH_USE_CASE_TOKEN,
     GET_SERVERS_USE_CASE_TOKEN,

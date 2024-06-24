@@ -78,17 +78,20 @@ export class UserRepository implements IUserRepository {
       .from(userPermissions)
       .where(eq(userPermissions.userId, userResult.id));
 
-    const permissionFromUserResults = await this.drizzle
-      .select()
-      .from(permissions)
-      .where(
-        inArray(
-          permissions.id,
-          userPermissionsResults.map(
-            (userPermission) => userPermission.permissionId,
-          ),
-        ),
-      );
+    const permissionFromUserResults =
+      userPermissionsResults.length !== 0
+        ? await this.drizzle
+            .select()
+            .from(permissions)
+            .where(
+              inArray(
+                permissions.id,
+                userPermissionsResults.map(
+                  (userPermission) => userPermission.permissionId,
+                ),
+              ),
+            )
+        : [];
 
     return {
       ...userResult,

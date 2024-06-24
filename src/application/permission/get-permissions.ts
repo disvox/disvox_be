@@ -7,9 +7,9 @@ import { PERMISSION_REPOSITORY_TOKEN } from '@/infrastructure';
 import { AuthUseCase } from '../auth';
 import { AUTH_USE_CASE_TOKEN } from '../token';
 
-interface IGetPermissionsInputDto {}
+export interface IGetPermissionsInputDto {}
 
-interface IGetPermissionsOutputDto {
+export interface IGetPermissionsOutputDto {
   id: number;
   action: EAction;
   subject: ESubject;
@@ -31,6 +31,7 @@ export class GetPermissionsUseCase
     const ability = await this.authUseCase.execute();
 
     return this.repository.getMany(
+      undefined,
       accessibleBy(ability).ofType(ESubject.Permission),
     );
   }

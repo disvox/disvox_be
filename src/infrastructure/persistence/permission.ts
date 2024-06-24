@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 
 import { IPermissionRepository, Permission } from '@/domain';
 import { schema, permissions, ExtendedMySql2Database } from './drizzle';
@@ -29,12 +29,18 @@ export class PermissionRepository implements IPermissionRepository {
   getAll(): Promise<Permission[]> {
     throw new Error('Method not implemented.');
   }
-  getOne(filter: Partial<Permission>): Promise<Permission> {
+
+  getOne(filter: Partial<Permission>, raw: string): Promise<Permission | null> {
     throw new Error('Method not implemented.');
   }
-  getMany(filter: Partial<Permission>): Promise<Permission[]> {
-    throw new Error('Method not implemented.');
+
+  getMany(_: Partial<Permission>, raw: string): Promise<Permission[]> {
+    return this.drizzle
+      .select()
+      .from(permissions)
+      .where(sql([raw] as any));
   }
+
   update(id: string, data: Partial<Permission>): Promise<Permission> {
     throw new Error('Method not implemented.');
   }

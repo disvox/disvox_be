@@ -25,6 +25,7 @@ export class GetServersUseCase
     const ability = await this.authUseCase.execute();
 
     return this.repository.getMany(
+      undefined,
       accessibleBy(ability).ofType(ESubject.Server),
     );
   }

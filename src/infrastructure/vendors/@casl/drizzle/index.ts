@@ -6,7 +6,7 @@ import {
 
 import { MongoToSQLTranslator } from '../../mongo2sql';
 
-const MONGOOSE_EMPTY_RESULT_QUERY = JSON.stringify({ $expr: { $eq: [0, 1] } });
+const MONGOOSE_EMPTY_RESULT_QUERY = JSON.stringify({ $or: [{}] });
 export const EMPTY_RESULT_QUERY = '(1 = 1)';
 
 function convertToSqlWhereClause(mongoQuery: Record<string, unknown>) {

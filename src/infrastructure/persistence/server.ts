@@ -41,11 +41,11 @@ export class ServerRepository implements IServerRepository {
     throw new Error('Method not implemented.');
   }
 
-  async getMany(filter: string | Partial<Server>): Promise<Server[]> {
+  async getMany(_: Partial<Server>, raw: string): Promise<Server[]> {
     const userServersResults = await this.drizzle
       .select()
       .from(userServers)
-      .where(sql([filter] as any));
+      .where(sql([raw] as any));
 
     return this.drizzle
       .select()

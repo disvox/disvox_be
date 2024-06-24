@@ -1,0 +1,2 @@
+ALTER TABLE `permissions` MODIFY COLUMN `action` enum('manage','read','create','update','delete') NOT NULL;--> statement-breakpoint
+ALTER TABLE `permissions` MODIFY COLUMN `subject` enum('all','permission','role','user','server') NOT NULL;

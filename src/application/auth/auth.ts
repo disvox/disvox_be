@@ -21,11 +21,11 @@ export class AuthUseCase implements IUseCase<IAuthInputDto, IAuthOutputDto> {
   ) {}
   async execute(): Promise<IAuthOutputDto> {
     const { permissions } = await this.userRepository.getOneWithPopulate({
-      id: this.cls.get('user.id'),
+      id: this.cls.get().user.id,
     });
 
     const replaceTemplatePermissions = replaceTemplateString(permissions, {
-      [CURRENT_USER_ID]: this.cls.get('user.id'),
+      [CURRENT_USER_ID]: this.cls.get().user.id,
     });
 
     return createMongoAbility<[EAction, ESubject]>(replaceTemplatePermissions);
