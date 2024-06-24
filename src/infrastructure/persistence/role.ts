@@ -1,11 +1,16 @@
 import { Inject } from '@nestjs/common';
-
-import { IRoleRepository, Permission, Role } from '@/domain';
-import { ExtendedMySql2Database } from './type';
-import { DRIZZLE_TOKEN } from '../token';
-import { permissions, rolePermissions, roles, schema } from './drizzle';
 import { eq, inArray } from 'drizzle-orm';
 import { MySqlInsertValue } from 'drizzle-orm/mysql-core';
+
+import { IRoleRepository, Permission, Role } from '@/domain';
+import { DRIZZLE_TOKEN } from '../token';
+import {
+  permissions,
+  rolePermissions,
+  roles,
+  schema,
+  ExtendedMySql2Database,
+} from './drizzle';
 
 export class RoleRepository implements IRoleRepository {
   constructor(

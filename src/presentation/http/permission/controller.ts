@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { ApiBody, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
 import {
@@ -27,7 +27,7 @@ export class PermissionController {
   })
   @ApiBody({ type: CreatePermissionDto })
   @Post()
-  async createPermission(
+  createPermission(
     @Body() input: CreatePermissionDto,
   ): Promise<PermissionResponseDto> {
     return this.createPermissionUseCase.execute(input);

@@ -2,8 +2,12 @@ import { Inject } from '@nestjs/common';
 import { eq, inArray, sql } from 'drizzle-orm';
 
 import { IServerRepository, Server } from '@/domain';
-import { ExtendedMySql2Database } from './type';
-import { schema, servers, userServers } from './drizzle';
+import {
+  schema,
+  servers,
+  userServers,
+  ExtendedMySql2Database,
+} from './drizzle';
 import { DRIZZLE_TOKEN } from '../token';
 
 export class ServerRepository implements IServerRepository {

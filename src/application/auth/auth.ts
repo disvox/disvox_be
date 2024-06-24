@@ -1,31 +1,31 @@
 import { Inject } from '@nestjs/common';
 import { MongoAbility, createMongoAbility } from '@casl/ability';
+import { ClsService } from 'nestjs-cls';
 
 import { EAction, ESubject, IUserRepository } from '@/domain';
 import { IUseCase } from '@/shared';
 import { USER_REPOSITORY_TOKEN } from '@/infrastructure';
-import { IAuthPayload } from './interfaces';
 import { replaceTemplateString } from '@/utils';
+import { IAuthPayload } from './interfaces';
 import { CURRENT_USER_ID } from './constants';
 
-interface IAuthInputDto extends IAuthPayload {}
+export interface IAuthInputDto extends IAuthPayload {}
 
-interface IAuthOutputDto extends MongoAbility {}
+export interface IAuthOutputDto extends MongoAbility {}
 
 export class AuthUseCase implements IUseCase<IAuthInputDto, IAuthOutputDto> {
   constructor(
     @Inject(USER_REPOSITORY_TOKEN)
-    private readonly userRepository: IUserRepository, // private readonly abilityFactory: IAbilityFactory,
+    private readonly userRepository: IUserRepository,
+    private readonly cls: ClsService,
   ) {}
-  async execute(input: IAuthInputDto): Promise<IAuthOutputDto> {
-    const { userId } = input;
-
+  async execute(): Promise<IAuthOutputDto> {
     const { permissions } = await this.userRepository.getOneWithPopulate({
-      id: userId,
+      id: this.cls.get('user.id'),
     });
 
     const replaceTemplatePermissions = replaceTemplateString(permissions, {
-      [CURRENT_USER_ID]: userId,
+      [CURRENT_USER_ID]: this.cls.get('user.id'),
     });
 
     return createMongoAbility<[EAction, ESubject]>(replaceTemplatePermissions);

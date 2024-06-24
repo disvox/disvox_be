@@ -18,9 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate:generate": "pnpm drizzle-kit generate:mysql --config=src/infrastructure/persistence/drizzle/drizzle.config.ts",
+    "migrate:generate": "pnpm drizzle-kit generate:mysql --config=src/infrastructure/persistence/drizzle/config.ts",
     "migrate:up": "pnpm tsx src/infrastructure/persistence/drizzle/migrate.ts",
-    "drizzle:studio": "pnpm drizzle-kit studio --port 6000 --config=src/infrastructure/persistence/drizzle/drizzle.config.ts"
+    "drizzle:studio": "pnpm drizzle-kit studio --port 6000 --config=src/infrastructure/persistence/drizzle/config.ts"
   },
   "dependencies": {
     "@casl/ability": "^6.5.0",

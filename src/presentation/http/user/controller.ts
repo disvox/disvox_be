@@ -3,8 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { GET_USER_USE_CASE_TOKEN, GetUserUseCase } from '@/application';
 import { JwtAuthGuard, SWAGGER_SETTINGS } from '../shared';
-import { ClsService } from 'nestjs-cls';
-import { SerializeClass } from 'src/presentation/shared';
+import { SerializeClass } from '@/presentation/shared';
 import { UserResponseDto } from './dtos';
 
 @Controller()
@@ -15,13 +14,10 @@ export class UserController {
   constructor(
     @Inject(GET_USER_USE_CASE_TOKEN)
     private readonly getUserUseCase: GetUserUseCase,
-    private readonly cls: ClsService,
   ) {}
 
   @Get(':id')
   async getUser() {
-    return this.getUserUseCase.execute({
-      userId: this.cls.get('user.id'),
-    });
+    return this.getUserUseCase.execute();
   }
 }

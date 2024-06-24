@@ -1,25 +1,17 @@
 import { Inject } from '@nestjs/common';
 
-import {
-  IPermissionRepository,
-  Permission,
-  TConditionOperators,
-  EAction,
-  ESubject,
-} from '@/domain';
-import { IUseCase } from '@/shared';
+import { IPermissionRepository, Permission, EAction, ESubject } from '@/domain';
 import { PERMISSION_REPOSITORY_TOKEN } from '@/infrastructure';
+import { IUseCase } from '@/shared';
 
-export interface ICreatePermissionDto {
+export interface ICreatePermissionInputDto {
   action: EAction;
   subject: ESubject;
-  conditions: {
-    [key in TConditionOperators]?: Record<string, string>;
-  };
+  conditions: Record<string, any>;
   inverted: boolean;
 }
 
-interface ICreatedPermissionDto {
+export interface ICreatePermissionOutputDto {
   id: number;
   action: EAction;
   subject: ESubject;
@@ -28,7 +20,7 @@ interface ICreatedPermissionDto {
 }
 
 export class CreatePermissionUseCase
-  implements IUseCase<ICreatePermissionDto, ICreatedPermissionDto>
+  implements IUseCase<ICreatePermissionInputDto, ICreatePermissionOutputDto>
 {
   constructor(
     @Inject(PERMISSION_REPOSITORY_TOKEN)
@@ -36,8 +28,8 @@ export class CreatePermissionUseCase
   ) {}
 
   public async execute(
-    input: ICreatePermissionDto,
-  ): Promise<ICreatedPermissionDto> {
+    input: ICreatePermissionInputDto,
+  ): Promise<ICreatePermissionOutputDto> {
     const permission = new Permission();
 
     permission.action = input.action;

@@ -24,7 +24,7 @@ export class RoleController {
   })
   @ApiBody({ type: CreateRoleDto })
   @Post()
-  async createRole(@Body() input: CreateRoleDto): Promise<RoleResponseDto> {
+  async createRole(@Body() input: CreateRoleDto) {
     return this.createRoleUseCase.execute(input);
   }
 }

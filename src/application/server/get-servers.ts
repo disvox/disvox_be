@@ -7,9 +7,7 @@ import { SERVER_REPOSITORY_TOKEN } from '@/infrastructure';
 import { AUTH_USE_CASE_TOKEN } from '../token';
 import { accessibleBy } from '@/infrastructure/vendors/@casl/drizzle';
 
-interface IGetServersInputDto {
-  userId: number;
-}
+interface IGetServersInputDto {}
 
 interface IGetServersOutputDto {}
 
@@ -23,9 +21,8 @@ export class GetServersUseCase
     private readonly repository: IServerRepository,
   ) {}
 
-  async execute(input: IGetServersInputDto): Promise<IGetServersOutputDto> {
-    const { userId } = input;
-    const ability = await this.authUseCase.execute({ userId });
+  async execute(): Promise<IGetServersOutputDto> {
+    const ability = await this.authUseCase.execute();
 
     return this.repository.getMany(
       accessibleBy(ability).ofType(ESubject.Server),

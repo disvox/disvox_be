@@ -1,4 +1,5 @@
 import { Inject } from '@nestjs/common';
+import { ClsService } from 'nestjs-cls';
 
 import { EAction, ESubject, IServerRepository, Server } from '@/domain';
 import { HttpException, IUseCase } from '@/shared';
@@ -7,12 +8,11 @@ import { AUTH_USE_CASE_TOKEN } from '../token';
 import { AuthUseCase } from '../auth';
 import { ExceptionCode } from '../exception-codes';
 
-interface ICreateServerInputDto {
+export interface ICreateServerInputDto {
   name: string;
-  userId: number;
 }
 
-interface ICreateServerOutputDto extends Server {}
+export interface ICreateServerOutputDto extends Server {}
 
 export class CreateServerUseCase
   implements IUseCase<ICreateServerInputDto, ICreateServerOutputDto>
@@ -22,10 +22,11 @@ export class CreateServerUseCase
     private readonly authUseCase: AuthUseCase,
     @Inject(SERVER_REPOSITORY_TOKEN)
     private readonly repository: IServerRepository,
+    private readonly cls: ClsService,
   ) {}
 
   async execute(input: ICreateServerInputDto): Promise<ICreateServerOutputDto> {
-    const ability = await this.authUseCase.execute({ userId: input.userId });
+    const ability = await this.authUseCase.execute();
 
     if (ability.cannot(EAction.Create, ESubject.Server))
       throw new HttpException({
@@ -34,6 +35,9 @@ export class CreateServerUseCase
         message: 'You cannot create server',
       });
 
-    return this.repository.create({ name: input.name, ownerId: input.userId });
+    return this.repository.create({
+      name: input.name,
+      ownerId: this.cls.get('user.id'),
+    });
   }
 }

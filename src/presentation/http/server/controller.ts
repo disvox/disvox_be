@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ClsService } from 'nestjs-cls';
 
 import {
   CREATE_SERVER_USE_CASE_TOKEN,
@@ -8,7 +7,6 @@ import {
   GET_SERVERS_USE_CASE_TOKEN,
   GetServersUseCase,
 } from '@/application';
-import { Server } from '@/domain';
 import { SerializeClass } from '@/presentation/shared';
 import {
   JwtAuthGuard,
@@ -29,7 +27,6 @@ export class ServerController {
     private readonly getServersUseCase: GetServersUseCase,
     @Inject(CREATE_SERVER_USE_CASE_TOKEN)
     private readonly createServerUseCase: CreateServerUseCase,
-    private readonly cls: ClsService,
   ) {}
 
   @Get()
@@ -39,9 +36,7 @@ export class ServerController {
     description: ESwaggerDescription.OK,
   })
   async getServers(): Promise<any> {
-    return this.getServersUseCase.execute({
-      userId: this.cls.get('user.id'),
-    });
+    return this.getServersUseCase.execute();
   }
 
   @Post()
@@ -49,10 +44,7 @@ export class ServerController {
     type: ServerResponseDto,
     description: ESwaggerDescription.Created,
   })
-  async createServer(@Body() input: CreateServerDto): Promise<Server> {
-    return this.createServerUseCase.execute({
-      ...input,
-      userId: this.cls.get('user.id'),
-    });
+  async createServer(@Body() input: CreateServerDto) {
+    return this.createServerUseCase.execute(input);
   }
 }

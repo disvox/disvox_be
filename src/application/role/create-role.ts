@@ -4,26 +4,28 @@ import { IRoleRepository, Permission, Role } from '@/domain';
 import { IUseCase } from '@/shared';
 import { ROLE_REPOSITORY_TOKEN } from '@/infrastructure';
 
-interface ICreateRoleDto {
+export interface ICreateRoleInputDto {
   name: string;
   permissionIds: number[];
 }
 
-interface ICreatedRoleDto {
+export interface ICreateRoleOutputDto {
   id: number;
   name: string;
   permissions: Permission[];
 }
 
 export class CreateRoleUseCase
-  implements IUseCase<ICreateRoleDto, ICreatedRoleDto>
+  implements IUseCase<ICreateRoleInputDto, ICreateRoleOutputDto>
 {
   constructor(
     @Inject(ROLE_REPOSITORY_TOKEN)
     private readonly repository: IRoleRepository,
   ) {}
 
-  public async execute(input: ICreateRoleDto): Promise<ICreatedRoleDto> {
+  public async execute(
+    input: ICreateRoleInputDto,
+  ): Promise<ICreateRoleOutputDto> {
     const role = new Role();
 
     role.name = input.name;

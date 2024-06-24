@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { unionBy } from 'lodash';
 
 import { IUserRepository, Permission, Role, User } from '@/domain';
@@ -13,7 +13,7 @@ import {
   users,
 } from './drizzle';
 import { DRIZZLE_TOKEN } from '../token';
-import { ExtendedMySql2Database } from './type';
+import { ExtendedMySql2Database } from './drizzle/type';
 
 export class UserRepository implements IUserRepository {
   constructor(
